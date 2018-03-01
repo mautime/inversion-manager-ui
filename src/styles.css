@@ -1,1 +1,36 @@
 /* You can add global styles to this file, and also import other style files */
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
+
+.success-message-panel {
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+    color: #468847;
+}
+
+.error-message-panel {
+    color: #b94a48;
+    border-color: #eed3d7;
+    background-color: #f2dede;
+}
+
+info-message-panel {
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+    color: #3a87ad;
+}
+
+.success-message {
+    color: #468847;
+}
+
+.success-message-light {
+    color: #d6e9c6;
+}
+
+.error-message {
+    color: #b94a48;
+}
+
+.error-message-light {
+    color: #eed3d7;
+}

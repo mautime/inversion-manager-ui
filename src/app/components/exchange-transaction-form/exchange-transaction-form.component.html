@@ -1,0 +1,57 @@
+<form  fxLayout="column" fxLayoutGap="10px" [formGroup]="transactionFormGroup" autocomplete="off">
+    <div fxLayout="row" fxLayoutGap="10px">
+        <div fxFlex="50">
+            <mat-form-field fxFlexFill>
+                <input type="text" placeholder="Pick one" aria-label="Number" matInput formControlName="exchangeSymbolInputAutocompleteInput" [(ngModel)]="model.symbol" [matAutocomplete]="exchangeSymbolInputAutocompleteSelect">
+                <mat-autocomplete #exchangeSymbolInputAutocompleteSelect="matAutocomplete" autoActiveFirstOption>
+                    <mat-option *ngFor="let option of exchangeSymbols | async" [value]="option.symbol">
+                        <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
+                            <img [src]="option.logo" style="width: 30px; height: 30px;"/>
+                            <div>{{ option.symbol}} - {{option.name}}</div>
+                        </div>
+                    </mat-option>
+                </mat-autocomplete>                
+            </mat-form-field>
+        </div>
+        <div fxFlex="50" fxLayout="row" fxLayoutAlign="end">
+            <mat-form-field fxLayoutAlign="end">
+                <input matInput [matDatepicker]="transactionDatePicker" formControlName="transactionDateInput" [(ngModel)]="model.transactionDate" placeholder="Transaction Date">
+                <mat-datepicker-toggle matSuffix [for]="transactionDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #transactionDatePicker></mat-datepicker>
+            </mat-form-field>
+        </div>
+    </div>
+    <div fxLayout="row" fxLayoutGap="15px">
+        <mat-form-field>
+            <input matInput name="exchangeRateInput" formControlName="exchangeRateInput" [(ngModel)]="model.exchangeRate" placeholder="{{selectedExchangeSymbol.name}} price" (blur)="_blur($event)" (keyup)="_onKeyUp(_onUpdateExchangeRateAction, $event)">
+            <mat-error *ngIf="transactionFormGroup.get('exchangeRateInput').hasError('required')">Required value</mat-error>
+        </mat-form-field>
+        <mat-form-field *ngIf="model?.transactionType == 'BUY'">
+            <input matInput name="sourceAmountInput" formControlName="sourceAmountInput" placeholder="USD" [(ngModel)]="model.sourceAmount" (blur)="_blur($event)" (keyup)="_onKeyUp(_onUpdateSourceAmountAction, $event)">
+            <mat-error *ngIf="transactionFormGroup.get('sourceAmountInput').hasError('required')">Required value</mat-error>
+        </mat-form-field>
+        <mat-form-field *ngIf="model?.transactionType == 'SELL'">
+            <input matInput name="targetAmountInput" formControlName="targetAmountInput" [(ngModel)]="model.targetAmount" placeholder="Quantity" (blur)="_blur($event)" (keyup)="_onKeyUp(_onUpdateTransactionFeeAction, $event)"/>
+            <span matSuffix>{{selectedExchangeSymbol.name}}</span>
+            <mat-error *ngIf="transactionFormGroup.get('targetAmountInput').hasError('required')">Required value</mat-error>
+            <mat-error *ngIf="transactionFormGroup.get('targetAmountInput').hasError('pattern')">Invalid value</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput name="transactionFeeInput" formControlName="transactionFeeInput" [(ngModel)]="model.transactionFee" placeholder="Fees (USD)" (blur)="_blur($event)" (keyup)="_onKeyUp(_onUpdateTransactionFeeAction, $event)"/>
+            <span matSuffix>=</span>
+            <mat-error *ngIf="transactionFormGroup.get('transactionFeeInput').hasError('required')">Required value</mat-error>
+        </mat-form-field>
+        <mat-form-field *ngIf="model?.transactionType == 'SELL'">
+            <input matInput name="sourceAmountInput" formControlName="sourceAmountInput" placeholder="USD" [ngModel]="model.sourceAmount | currency" [readonly]="true">
+        </mat-form-field>
+        <mat-form-field *ngIf="model?.transactionType == 'BUY'">
+            <input matInput name="targetAmountInput" formControlName="targetAmountInput" [ngModel]="model.targetAmount" placeholder="Quantity" [readonly]="true"/>
+            <span matSuffix>{{selectedExchangeSymbol.name}}</span>
+        </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end">
+        <button mat-button (click)="_cancel()">Cancel</button>
+        <button mat-button (click)="_save()" [disabled]="!transactionFormGroup.valid">Save</button>
+        <button mat-button (click)="_saveAndNew()" [disabled]="!transactionFormGroup.valid">Save & New</button>
+    </div>
+</form>

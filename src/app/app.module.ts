@@ -1,18 +1,99 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { NgModule, Injector, Injectable } from '@angular/core';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
+import {
+  MatToolbarModule,
+  MatIconModule, 
+  MatFormFieldModule, 
+  MatInputModule, 
+  MatSelectModule, 
+  MatSlideToggleModule, 
+  MatButtonModule, 
+  MatTableModule, 
+  MatPaginatorModule,
+  MatSnackBarModule, 
+  MatListModule, 
+  MatCardModule, 
+  MatGridListModule, 
+  MatDividerModule, 
+  MatSidenavModule, 
+  MatDatepickerModule, 
+  NativeDateModule,
+  MatNativeDateModule, 
+  MatAutocompleteModule, 
+  MatTabsModule,
+  MatMenuModule
+} from '@angular/material';
 
-import { AppComponent } from './app.component';
+import { AuthorizationInterceptor } from './app.interceptors';
 
+import {ExchangeTransactionFormComponent} from './components/exchange-transaction-form/exchange-transaction-form.component';
+import {MainComponent} from './pages/_main/_main.component';
+import {LoginComponent} from './pages/login/login.component';
+import {HomeComponent} from './pages/home/home.component';
+import { ExchangeTransactionComponent } from './pages/exchange-transaction/exchange-transaction.component';
+
+import {DataCatalogService} from './services/data-catalog.service';
+import { ExchangeTransactionManagerService } from './services/exchnage-transaction.service';
+
+import {routesModule} from './app.routes';
+import { BaseComponent } from './pages/base.component';
+import { CryptoCoinService } from './services/crypto-coin.service';
+import { Observable } from 'rxjs/Observable';
+import { AuthorizationService } from './services/auth.service';
+import { AuthorizationRouteActivatorService } from './services/auth-route-activator.service';
+import { ExchangeTransactionSellFormComponent } from './components/exchange-transaction-form/exchange-transaction-sell-form.component';
+import { ExchangeTransactionBuyFormComponent } from './components/exchange-transaction-form/exchange-transaction-buy-form.component';
+import { TypeaheadService } from './services/typeahead.service';
+import { UtilService } from './services/util.service';
 
 @NgModule({
   declarations: [
-    AppComponent
+    BaseComponent, 
+    MainComponent, 
+    LoginComponent, 
+    HomeComponent, 
+    ExchangeTransactionComponent, 
+    ExchangeTransactionFormComponent, 
+    ExchangeTransactionBuyFormComponent, 
+    ExchangeTransactionSellFormComponent
   ],
   imports: [
-    BrowserModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    BrowserModule, 
+    BrowserAnimationsModule, 
+    HttpClientModule, 
+    FlexLayoutModule, 
+    FormsModule, 
+    ReactiveFormsModule, 
+    MatToolbarModule, 
+    MatIconModule, 
+    MatFormFieldModule, 
+    MatInputModule, 
+    MatSelectModule, 
+    MatSlideToggleModule, 
+    MatButtonModule, 
+    MatTableModule, 
+    MatPaginatorModule, 
+    MatSnackBarModule, 
+    MatListModule, 
+    MatCardModule, 
+    MatGridListModule, 
+    MatDividerModule, 
+    MatSidenavModule, 
+    MatDatepickerModule, 
+    MatNativeDateModule, 
+    MatTabsModule, 
+    MatAutocompleteModule, 
+    MatMenuModule, 
+    routesModule
+  ], 
+  providers: [UtilService, DataCatalogService, CryptoCoinService, TypeaheadService,ExchangeTransactionManagerService, AuthorizationService, AuthorizationRouteActivatorService, {provide: HTTP_INTERCEPTORS, useClass: AuthorizationInterceptor, multi: true}],
+  bootstrap: [MainComponent]
 })
-export class AppModule { }
+export class AppModule { 
+    constructor(utilService: UtilService){}
+}
