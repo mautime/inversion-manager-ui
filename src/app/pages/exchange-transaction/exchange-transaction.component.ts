@@ -12,7 +12,7 @@ import { CryptoCoinService } from "../../services/crypto-coin.service";
 
 @Component({
     selector: 'exchange-transaction', 
-    templateUrl: '/exchange-transaction.component.html'
+    templateUrl: './exchange-transaction.component.html'
 })
 export class ExchangeTransactionComponent extends BaseComponent implements OnInit, AfterViewInit {
     private transactionType: string;

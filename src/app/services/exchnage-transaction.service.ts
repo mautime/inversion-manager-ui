@@ -1,8 +1,10 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs/Observable";
-import { map } from "rxjs/operators";
+import { forkJoin } from 'rxjs/observable/forkJoin';
+import { map, tap, switchMap, mergeMap, filter, finalize, take } from "rxjs/operators";
 import { Injectable } from "@angular/core";
 import { CryptoCoinService } from "./crypto-coin.service";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
 @Injectable()
 export class ExchangeTransactionManagerService {
@@ -48,17 +50,59 @@ export class ExchangeTransactionManagerService {
     }
 
     getInversionSummary(): Observable<any> {
-        return this.http.get<any>('http://localhost:8080/api/inversion/exchange/summary').pipe(map(response => {
+        return this.http.get<any>('http://localhost:8080/api/inversion/exchange/summary').pipe(
+        map(response => response.results),
+        switchMap((response: any) => {
             console.log('PIPE');
             console.log(response);
 
-            if (response.results && response.results.summary){
+            let instance = this;
+
+            response.gain = 0;
+            let count = 0;
+            let subject: BehaviorSubject<number> = new BehaviorSubject(0);
+
+            response.summary.map(item => {
+
+                forkJoin(instance.cryptoCoinService.getCoinInfo(item.exchangeSymbol), instance.cryptoCoinService.getCoinPrice(item.exchangeSymbol)).subscribe(data => {
+                    console.log('SUPER SUBSCRIBE');
+                    console.log(data[0]);
+                    item.symbolLogo = data[0].logo;
+                    item.order = data[0].order;
+
+                    item.marketValue = data[1]['USD'];
+                    item.worth = item.marketValue * item.totalTargetAmount;
+                    item.gain = (item.worth) - item.totalSourceAmount;
+
+                    response.gain += item.gain;
+                    count++;
+
+                    subject.next(count);
+                });
+            });
+
+            return subject.pipe(filter(count => count == response.summary.length), map(res => {
+                response.summary.sort((x: any, y: any) => {
+                    if (x.order > y.order) {
+                        return 1;
+                    } else if (x.order < y.order){
+                        return -1
+                    } else {
+                        return 0;
+                    }
+                });
+
+                return response;
+            }));
+            //return response;
+            /*if (response.results && response.results.summary){
                 let instance = this;
                 response.results.gain = 0;
                 
                 response.results.summary.forEach(function(element, index){
                     instance.cryptoCoinService.getCoinInfo(element.exchangeSymbol).subscribe(info => {
                         element.symbolLogo = info.logo;
+                        element.order = info.order;
                     });
 
                     instance.cryptoCoinService.getCoinPrice(element.exchangeSymbol).subscribe(price => {
@@ -71,7 +115,7 @@ export class ExchangeTransactionManagerService {
                 });
             }
 
-            return response;
+            return response.results;*/
         }));
     }
 

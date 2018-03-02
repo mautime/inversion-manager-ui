@@ -15,58 +15,44 @@ import { switchMap, delay } from "rxjs/operators";
     styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-    searchCriteria: any;
     inversionSummary: any;
-    exchangeTransactionsTableDataSource: MatTableDataSource<any>;
 
     @ViewChild(MatPaginator)
     exchangeTransactionsTablePaginator: MatPaginator;
 
     constructor(private dataCatalogService: DataCatalogService, private exchangeTransactionService: ExchangeTransactionManagerService){
-        this.exchangeTransactionsTableDataSource = new MatTableDataSource<any>();
     }
 
     ngOnInit(){
         console.log('HomeComponent#ngOnInit');
 
-        this.searchCriteria = {
-            pagination: {
-                max: 10, 
-                offset: 0
-            }
-        };
-
         timer(0, 60 * 1000 * 60).pipe(switchMap(() => this.exchangeTransactionService.getInversionSummary())).subscribe(response => {
-            this.inversionSummary = response.results;
+            console.log('ENTRA');
+            console.log(response);
+
+            /*(<any[]>response.summary).sort((x: any, y: any) => {
+                let result: number = 0;
+                console.log('SORT');
+                console.log(x.symbolLogo);
+                console.log(x.exchangeSymbol);
+                console.log(y.order);
+                if (x.order > y.order) {
+                    result = 1;
+                } else if (x.order < y.order){
+                    result = -1;
+                }
+
+                console.log(result);
+                return result;
+            }).forEach(function(element, index){
+                console.log(element.order);
+            });*/
+
+            this.inversionSummary = response;
         });
     }
 
     ngAfterViewInit() {
         //this.exchangeTransactionsTableDataSource.paginator = this.exchangeTransactionsTablePaginator;
-
-        this._refreshTable();
-
-        merge(this.exchangeTransactionsTablePaginator.page).subscribe(response => {
-            console.log('merge');
-            console.log(response);
-            this._refreshTable();
-            //this.exchangeTransactionsTableDataSource.data = [];
-        });
-    }
-
-    private _refreshTable(){
-        this.searchCriteria.pagination = {
-            max: this.exchangeTransactionsTablePaginator.pageSize, 
-            offset: (this.exchangeTransactionsTablePaginator.pageIndex) * this.exchangeTransactionsTablePaginator.pageSize
-        };
-
-        this.exchangeTransactionService.search(this.searchCriteria).subscribe(response => {
-            console.log('SUCCESS');
-            console.log(response);
-            this.exchangeTransactionsTablePaginator.length = response.results.total;
-            this.exchangeTransactionsTableDataSource.data = response.results.results;
-
-            //this.exchangeTransactionsTableDataSource._updatePaginator(30);
-        });
     }
 }

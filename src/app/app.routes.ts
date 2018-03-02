@@ -3,6 +3,7 @@ import {HomeComponent} from './pages/home/home.component';
 import { ExchangeTransactionComponent } from './pages/exchange-transaction/exchange-transaction.component';
 import { AuthorizationRouteActivatorService } from './services/auth-route-activator.service';
 import { LoginComponent } from './pages/login/login.component';
+import { ExchangeTransactionListComponent } from './pages/exchange-transaction/exchange-transaction-list.component';
 
 const routes: Routes = [{
     path: 'login', 
@@ -12,13 +13,16 @@ const routes: Routes = [{
     component: HomeComponent, 
     canActivate: [AuthorizationRouteActivatorService]
 }, {
-    path: 'exchange-transaction', 
+    path: 'exchange-transactions', 
     canActivate: [AuthorizationRouteActivatorService], 
     children: [{
         path: '', 
-        component: ExchangeTransactionComponent
+        component: ExchangeTransactionListComponent
     }, {
         path: ':id', 
+        component: ExchangeTransactionComponent
+    }, {
+        path: 'add', 
         component: ExchangeTransactionComponent
     }]
 }, {

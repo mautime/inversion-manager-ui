@@ -50,6 +50,7 @@ import { ExchangeTransactionSellFormComponent } from './components/exchange-tran
 import { ExchangeTransactionBuyFormComponent } from './components/exchange-transaction-form/exchange-transaction-buy-form.component';
 import { TypeaheadService } from './services/typeahead.service';
 import { UtilService } from './services/util.service';
+import { ExchangeTransactionListComponent } from './pages/exchange-transaction/exchange-transaction-list.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { UtilService } from './services/util.service';
     LoginComponent, 
     HomeComponent, 
     ExchangeTransactionComponent, 
+    ExchangeTransactionListComponent, 
     ExchangeTransactionFormComponent, 
     ExchangeTransactionBuyFormComponent, 
     ExchangeTransactionSellFormComponent

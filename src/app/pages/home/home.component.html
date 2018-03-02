@@ -5,17 +5,17 @@
         </mat-card-header>
         <mat-divider></mat-divider>
         <mat-card-content>
-            <div fxLayout="column" *ngIf="inversionSummary">
-                <mat-list fxFlexAlign="end">
-                    <mat-list-item fxLayoutAlign="end">
-                        <div fxLayout="row" fxLayoutGap="10px">
-                            <div><h3>Invested: </h3></div>
+            <div fxLayout="column" fxLayoutGap="10px" *ngIf="inversionSummary">
+                <mat-list fxLayout="row" fxLayoutAlign="end">
+                    <mat-list-item>
+                        <div fxLayout="row" fxLayoutGap="25px" fxLayoutAlign="start center">
+                            <div><mat-icon class="mat-36">account_balance_wallet</mat-icon></div>
                             <div><h3>{{inversionSummary.total | currency}} USD</h3></div>
                         </div>
                     </mat-list-item>
-                    <mat-list-item fxLayoutAlign="end">
-                        <div fxLayout="row" fxLayoutGap="10px">
-                            <div><h3>Gain/Loss: </h3></div>
+                    <mat-list-item>
+                        <div fxLayout="row" fxLayoutGap="25px" fxLayoutAlign="start center">
+                            <div><mat-icon class="far fa-money-bill-alt fa-2x"></mat-icon></div>
                             <div [ngClass]="{'success-message': inversionSummary.gain > 0, 'error-message': inversionSummary.gain < 0}"><h3>{{inversionSummary.gain | currency}} USD</h3></div>
                         </div>
                     </mat-list-item>
@@ -31,9 +31,9 @@
                                         <div style="width: 100%; text-align: right; font-weight: bolder;">{{inversionSummary.marketValue | currency}} USD</div>
                                     </div>
                                     <div><mat-divider></mat-divider></div>
-                                    <div fxLayout="column" fxLayoutGap="10px">
-                                        <div><span style="font-weight: bold; font-size: 18px;">Inversion: </span>{{inversionSummary.totalSourceAmount | currency}} USD = {{inversionSummary.totalTargetAmount}} {{inversionSummary.exchangeSymbol}}</div>
-                                        <div><span style="font-weight: bold; font-size: 18px;">Worth: </span>{{inversionSummary.worth | currency}} USD</div>
+                                    <div fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center">
+                                        <div fxLayout="row" fxLayoutAlign="none center" fxLayoutGap="10px"><mat-icon>account_balance_wallet</mat-icon><span>{{inversionSummary.totalSourceAmount | currency}} USD = {{inversionSummary.totalTargetAmount}} {{inversionSummary.exchangeSymbol}}</span></div>
+                                        <div fxLayout="row" fxLayoutAlign="none center" fxLayoutGap="10px"><i class="far fa-money-bill-alt fa-lg"></i><span>{{inversionSummary.worth | currency}} USD</span></div>
                                         <div [ngClass]="{'success-message': inversionSummary.gain > 0, 'error-message': inversionSummary.gain < 0}" fxFlexAlign="end" style="font-size: 16px; font-weight: bold;">{{inversionSummary.gain | currency}}</div>
                                     </div>
                                 </div>
@@ -42,33 +42,6 @@
                     </div>
                 </div>
             </div>
-            <mat-table #table [dataSource]="exchangeTransactionsTableDataSource">
-                <ng-container matColumnDef="sourceAmount">
-                    <mat-header-cell *matHeaderCellDef>Amount</mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{element.sourceAmount | currency}} USD</mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="transactionType">
-                        <mat-header-cell *matHeaderCellDef>Type</mat-header-cell>
-                        <mat-cell *matCellDef="let element">{{element.transactionType}}</mat-cell>
-                    </ng-container>
-                <ng-container matColumnDef="targetAmount">
-                    <mat-header-cell *matHeaderCellDef>Amount</mat-header-cell>
-                    <mat-cell *matCellDef="let element">
-                        <div>{{element.targetAmount}} {{element.symbol.symbol}}</div>
-                    </mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="exchangeSymbol">
-                    <mat-header-cell *matHeaderCellDef>Exchange Symbol</mat-header-cell>
-                    <mat-cell *matCellDef="let element">
-                        <img [src]="element.symbolLogo" style="width: 25px;"/>
-                    </mat-cell>
-                </ng-container>
-                <mat-header-row *matHeaderRowDef="['transactionType', 'exchangeSymbol', 'sourceAmount', 'targetAmount']"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: ['transactionType', 'exchangeSymbol', 'sourceAmount', 'targetAmount'];"></mat-row>
-            </mat-table>
-            <mat-paginator #exchangeTransactionsTablePaginator
-                [pageSize]="10">
-            </mat-paginator>
         </mat-card-content>
     </mat-card>
 </div>
