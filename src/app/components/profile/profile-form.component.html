@@ -1,0 +1,27 @@
+<form fxLayout="column" fxLayoutGap="10px" [formGroup]="profileFormGroup" (ngSubmit)="_save()" autocomplete="off">
+    <mat-form-field>
+        <input matInput name="emailInput" formControlName="email" placeholder="user@email.com">
+        <mat-error *ngIf="profileFormGroup.get('email').hasError('required')">Required value</mat-error>
+        <mat-error *ngIf="profileFormGroup.get('email').hasError('exists')">An account with this email already exists</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput name="firstNameInput" formControlName="firstName" placeholder="First Name">
+        <mat-error *ngIf="profileFormGroup.get('firstName').hasError('required')">Required value</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput name="lastNameInput" formControlName="lastName" placeholder="Last Name">
+        <mat-error *ngIf="profileFormGroup.get('lastName').hasError('required')">Required value</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+        <input type="password" matInput name="passwordInput" formControlName="password" placeholder="Pasword">
+        <mat-error *ngIf="profileFormGroup.get('password').hasError('required')">Required value</mat-error>
+    </mat-form-field>
+    <mat-form-field *ngIf="!profileFormGroup.get('passwordConfirmation').disabled">
+        <input type="password" matInput name="passwordConfirmationInput" formControlName="passwordConfirmation" placeholder="Confirm Password">
+        <mat-error *ngIf="profileFormGroup.get('passwordConfirmation').hasError('equalValue')">Passwords don't match</mat-error>
+    </mat-form-field>
+    <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="10px">
+        <button mat-raised-button type="button" (click)="_cancel()">Cancel</button>
+        <button mat-raised-button type="submit" color="primary" [disabled]="!profileFormGroup.valid">Register</button>
+    </div>
+</form>

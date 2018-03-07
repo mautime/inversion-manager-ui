@@ -1,5 +1,5 @@
-<div>
-    <mat-card>
+<div fxLayout="column" fxFlexFill>
+    <mat-card fxFlex.gt-md="90vh" fxFlex.lt-sm="100%">
         <mat-card-header>
             <mat-card-title><h1>Dashboard</h1></mat-card-title>
         </mat-card-header>
@@ -16,7 +16,7 @@
                     <mat-list-item>
                         <div fxLayout="row" fxLayoutGap="25px" fxLayoutAlign="start center">
                             <div><mat-icon class="far fa-money-bill-alt fa-2x"></mat-icon></div>
-                            <div [ngClass]="{'success-message': inversionSummary.gain > 0, 'error-message': inversionSummary.gain < 0}"><h3>{{inversionSummary.gain | currency}} USD</h3></div>
+                            <div><h3>{{inversionSummary.worth | currency}} <span [ngClass]="{'success-message': inversionSummary.gain > 0, 'error-message': inversionSummary.gain < 0}">({{inversionSummary.gain | currency}} USD)</span></h3></div>
                         </div>
                     </mat-list-item>
                 </mat-list>

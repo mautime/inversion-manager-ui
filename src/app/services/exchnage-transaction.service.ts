@@ -52,6 +52,7 @@ export class ExchangeTransactionManagerService {
     getInversionSummary(): Observable<any> {
         return this.http.get<any>('http://localhost:8080/api/inversion/exchange/summary').pipe(
         map(response => response.results),
+        filter(response => response.summary != null && response.total != null), 
         switchMap((response: any) => {
             console.log('PIPE');
             console.log(response);
@@ -59,6 +60,7 @@ export class ExchangeTransactionManagerService {
             let instance = this;
 
             response.gain = 0;
+            response.worth = 0;
             let count = 0;
             let subject: BehaviorSubject<number> = new BehaviorSubject(0);
 
@@ -74,6 +76,7 @@ export class ExchangeTransactionManagerService {
                     item.worth = item.marketValue * item.totalTargetAmount;
                     item.gain = (item.worth) - item.totalSourceAmount;
 
+                    response.worth += item.worth;
                     response.gain += item.gain;
                     count++;
 

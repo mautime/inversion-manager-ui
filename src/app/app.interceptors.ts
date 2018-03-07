@@ -19,7 +19,7 @@ export class AuthorizationInterceptor implements HttpInterceptor {
 
         //console.log('AuthorizationInterceptor#intercept');
         //console.log(token);
-        if (request.url.startsWith('http://localhost:8080/api')){
+        if (request.url.startsWith('http://localhost:8080/api/inversion')){
             clonedRequest = request.clone({
                 headers: request.headers.set('Authorization', 'Bearer ' + token)
             });

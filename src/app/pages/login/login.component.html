@@ -1,24 +1,31 @@
 <div fxLayout="column" fxLayoutAlign="none center" fxLayoutGap="10px">
     <div fxLayout="row">
-        <mat-card fxFlex="300px">
+        <mat-card>
             <mat-card-header>
-                <mat-card-title><h1>Login</h1></mat-card-title>
+                <mat-card-title><h1>{{tabGroup.selectedIndex == 0 ? 'Login' : 'Registration'}}</h1></mat-card-title>
             </mat-card-header>
             <mat-divider></mat-divider>
             <mat-card-content style="padding: 10px 0;">
-                <form fxLayout="column" fxLayoutAlign="none center" fxLayoutGap="10px" [formGroup]="loginFormGroup" (ngSubmit)="login()" autocomplete="off">
-                    <mat-form-field fxFlexFill>
-                        <input matInput name="usernameInput" formControlName="usernameInput" placeholder="Username" [(ngModel)]="credentials.username">
-                        <mat-error *ngIf="loginFormGroup.get('usernameInput').hasError('required')">Required value</mat-error>
-                    </mat-form-field>
-                    <mat-form-field fxFlexFill>
-                        <input matInput type="password" name="passwordInput" formControlName="passwordInput" placeholder="Password" [(ngModel)]="credentials.password">
-                        <mat-error *ngIf="loginFormGroup.get('passwordInput').hasError('required')">Required value</mat-error>
-                    </mat-form-field>
-                    <div>
-                        <button mat-raised-button color="primary" type="submit">Login</button>
-                    </div>
-                </form>
+                <mat-tab-group fxLayout="column" fxLayoutGap="25px" (selectedTabChange)="changeTab" mat-stretch-tabs>
+                    <mat-tab #loginTab label="Login">
+                        <form fxLayout="column" fxLayoutAlign="none center" fxLayoutGap="10px" [formGroup]="loginFormGroup" (ngSubmit)="login()" autocomplete="off">
+                            <mat-form-field fxFlexFill>
+                                <input matInput name="usernameInput" formControlName="usernameInput" placeholder="Username" [(ngModel)]="credentials.username">
+                                <mat-error *ngIf="loginFormGroup.get('usernameInput').hasError('required')">Required value</mat-error>
+                            </mat-form-field>
+                            <mat-form-field fxFlexFill>
+                                <input matInput type="password" name="passwordInput" formControlName="passwordInput" placeholder="Password" [(ngModel)]="credentials.password">
+                                <mat-error *ngIf="loginFormGroup.get('passwordInput').hasError('required')">Required value</mat-error>
+                            </mat-form-field>
+                            <div>
+                                <button mat-raised-button color="primary" type="submit">Login</button>
+                            </div>
+                        </form>
+                    </mat-tab>
+                    <mat-tab #registerTab label="Sign Up">
+                        <profile-form [(model)]="profile" (onSave)="register($event)" [onCheckExistingObservable]="checkExisting" *ngIf="this.profile"></profile-form>
+                    </mat-tab>
+                </mat-tab-group>
             </mat-card-content>
         </mat-card>
     </div>

@@ -1,23 +1,30 @@
-import { OnInit, Component } from "@angular/core";
+import { OnInit, Component, ViewChild } from "@angular/core";
 import { AuthorizationService } from "../../services/auth.service";
 import { Router } from "@angular/router";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { BaseComponent } from "../base.component";
-import { MatSnackBar } from "@angular/material";
+import { MatSnackBar, MatTabGroup } from "@angular/material";
 import { ErrorMessage } from "../../model/error-message.model";
+import { ProfileService } from "../../services/profile.service";
+import { Observable } from "rxjs/Observable";
+import { SuccessMessage } from "../../model/success-message.model";
 
 @Component({
     selector: 'login', 
     templateUrl: './login.component.html'
 })
 export class LoginComponent extends BaseComponent implements OnInit {
+    private vm = this;
+    private credentials: any = {};
+    private profile: any;
+    private loginFormGroup: FormGroup;
 
-    constructor(private router: Router, snackBar: MatSnackBar){
+    @ViewChild(MatTabGroup)
+    private tabGroup: MatTabGroup;
+
+    constructor(private router: Router, private profileService: ProfileService, snackBar: MatSnackBar){
         super(snackBar);
     }
-
-    credentials: any = {};
-    loginFormGroup: FormGroup;
 
     ngOnInit(){
         console.log('LoginComponent#ngOnInit');
@@ -29,6 +36,15 @@ export class LoginComponent extends BaseComponent implements OnInit {
             passwordInput: new FormControl('', [
                 Validators.required
             ])
+        });
+
+        this.tabGroup.selectedTabChange.subscribe(tab => {
+
+            if (tab.index == 1){
+                this.profile = {};
+            } else {
+                this.profile = undefined;
+            }
         });
     }
 
@@ -48,5 +64,27 @@ export class LoginComponent extends BaseComponent implements OnInit {
                 this.showErrorMessage(new ErrorMessage(errorMessage));
             });
         }
+    }
+
+    checkExisting = (email: string) => {
+        console.log('TEST');
+        console.log(email);
+        return this.profileService.exists(email);
+    };
+
+    register(params) {
+        console.log(params);
+        this.profileService.register(params.model).subscribe(response => {
+            console.log(response);
+
+            this.authService.login(params.model.email, params.model.password).subscribe(response => {
+                this.router.navigate(['/home']);
+            }, error => {
+                console.log(error);
+                let errorMessage = 'Unknown Exception';
+
+                this.showErrorMessage(new ErrorMessage(errorMessage));
+            });
+        });
     }
 }

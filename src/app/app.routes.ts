@@ -4,6 +4,7 @@ import { ExchangeTransactionComponent } from './pages/exchange-transaction/excha
 import { AuthorizationRouteActivatorService } from './services/auth-route-activator.service';
 import { LoginComponent } from './pages/login/login.component';
 import { ExchangeTransactionListComponent } from './pages/exchange-transaction/exchange-transaction-list.component';
+import { ProfileRegisterComponent } from './pages/profile/register/profile-register.component';
 
 const routes: Routes = [{
     path: 'login', 

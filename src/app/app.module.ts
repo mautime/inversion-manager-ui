@@ -51,6 +51,9 @@ import { ExchangeTransactionBuyFormComponent } from './components/exchange-trans
 import { TypeaheadService } from './services/typeahead.service';
 import { UtilService } from './services/util.service';
 import { ExchangeTransactionListComponent } from './pages/exchange-transaction/exchange-transaction-list.component';
+import { ProfileRegisterComponent } from './pages/profile/register/profile-register.component';
+import { ProfileService } from './services/profile.service';
+import { ProfileFormComponent } from './components/profile/profile-form.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +65,8 @@ import { ExchangeTransactionListComponent } from './pages/exchange-transaction/e
     ExchangeTransactionListComponent, 
     ExchangeTransactionFormComponent, 
     ExchangeTransactionBuyFormComponent, 
-    ExchangeTransactionSellFormComponent
+    ExchangeTransactionSellFormComponent, 
+    ProfileFormComponent
   ],
   imports: [
     BrowserModule, 
@@ -93,7 +97,7 @@ import { ExchangeTransactionListComponent } from './pages/exchange-transaction/e
     MatMenuModule, 
     routesModule
   ], 
-  providers: [UtilService, DataCatalogService, CryptoCoinService, TypeaheadService,ExchangeTransactionManagerService, AuthorizationService, AuthorizationRouteActivatorService, {provide: HTTP_INTERCEPTORS, useClass: AuthorizationInterceptor, multi: true}],
+  providers: [UtilService, DataCatalogService, CryptoCoinService, TypeaheadService,ExchangeTransactionManagerService, ProfileService, AuthorizationService, AuthorizationRouteActivatorService, {provide: HTTP_INTERCEPTORS, useClass: AuthorizationInterceptor, multi: true}],
   bootstrap: [MainComponent]
 })
 export class AppModule { 
