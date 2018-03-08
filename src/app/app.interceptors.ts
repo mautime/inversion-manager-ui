@@ -5,6 +5,7 @@ import { AuthorizationService } from "./services/auth.service";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { catchError, switchMap, finalize, filter, take } from "rxjs/operators";
 import { ErrorObservable } from "rxjs/observable/ErrorObservable";
+import { AppModule } from "./app.module";
 
 @Injectable()
 export class AuthorizationInterceptor implements HttpInterceptor {
@@ -19,11 +20,22 @@ export class AuthorizationInterceptor implements HttpInterceptor {
 
         //console.log('AuthorizationInterceptor#intercept');
         //console.log(token);
-        if (request.url.startsWith('http://localhost:8080/api/inversion')){
+        if (request.url.startsWith('/api') && !request.url.startsWith('/api/data/coinlist')){
             clonedRequest = request.clone({
+                url: 'http://ec2-18-188-47-234.us-east-2.compute.amazonaws.com:8080' + request.url, 
+                //url: 'http://NXL90734.am.freescale.net:8080' + request.url, 
                 headers: request.headers.set('Authorization', 'Bearer ' + token)
             });
 
+            console.log('clonedREquest');
+            console.log(clonedRequest);
+        } else if (request.url.startsWith('/oauth')){
+            clonedRequest = request.clone({
+                url: 'http://ec2-18-188-47-234.us-east-2.compute.amazonaws.com:9090' + request.url
+            });
+        }
+
+        if (clonedRequest){
             return next.handle(clonedRequest).pipe(catchError((error, caught) => {
 
                 if (error instanceof HttpErrorResponse){
@@ -38,13 +50,12 @@ export class AuthorizationInterceptor implements HttpInterceptor {
                 }
                 
             }));
+        } else {
+            return next.handle(request);
         }
-
-        return next.handle(request);
     }
 
     handle401(request: HttpRequest<any>, next: HttpHandler) {
-
         if (!this.refreshingToken){
             this.refreshingToken = true;
 

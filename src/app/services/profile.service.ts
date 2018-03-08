@@ -8,10 +8,10 @@ export class ProfileService {
     constructor(private http: HttpClient){}
 
     register(user: any): Observable<any> {
-        return this.http.post('http://localhost:8080/api/profile', user).pipe(map((response: any) => response.results));
+        return this.http.post('/api/profile', user).pipe(map((response: any) => response.results));
     }
 
     exists(email: string): Observable<any> {
-        return this.http.get(`http://localhost:8080/api/profile/check/${email}`).pipe(map((response: any) => response.results));
+        return this.http.get(`/api/profile/check/${email}`).pipe(map((response: any) => response.results));
     }
 }

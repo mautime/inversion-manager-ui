@@ -20,6 +20,7 @@
             <mat-sidenav #sidenav mode="side" style="width: 60px;" opened *ngIf="isAuthenticated$ | async">
                 <mat-nav-list>
                     <a mat-list-item mat-button-icon routerLink="/home"><mat-icon>home</mat-icon></a>
+                    <a mat-list-item mat-button-icon routerLink="/exchange-transactions" ><mat-icon>search</mat-icon></a>
                     <a mat-list-item mat-button-icon routerLink="/exchange-transactions/add" ><mat-icon>add_circle</mat-icon></a>
                 </mat-nav-list>
             </mat-sidenav>

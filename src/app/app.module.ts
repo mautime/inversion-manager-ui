@@ -51,7 +51,6 @@ import { ExchangeTransactionBuyFormComponent } from './components/exchange-trans
 import { TypeaheadService } from './services/typeahead.service';
 import { UtilService } from './services/util.service';
 import { ExchangeTransactionListComponent } from './pages/exchange-transaction/exchange-transaction-list.component';
-import { ProfileRegisterComponent } from './pages/profile/register/profile-register.component';
 import { ProfileService } from './services/profile.service';
 import { ProfileFormComponent } from './components/profile/profile-form.component';
 

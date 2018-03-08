@@ -16,7 +16,7 @@ import { UtilService } from "../services/util.service";
 export class BaseComponent {
     authService: AuthorizationService;
 
-    private isAuthenticated$: Observable<boolean>;
+    isAuthenticated$: Observable<boolean>;
 
     constructor(private snackBar: MatSnackBar){
         this.authService = UtilService.injector.get(AuthorizationService);

@@ -7,7 +7,7 @@ export class DataCatalogService {
     constructor(private http: HttpClient){}
 
     getExchangeSymbols(): Observable<any> {
-        return this.http.get('http://localhost:8080/api/data/exchange/symbols');
+        return this.http.get('/api/data/exchange/symbols');
     }
 
     getExchangeTransactionTypes(): any[] {

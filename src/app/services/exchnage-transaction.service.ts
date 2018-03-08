@@ -11,7 +11,7 @@ export class ExchangeTransactionManagerService {
     constructor(private http: HttpClient, private cryptoCoinService: CryptoCoinService){}
 
     get(id: number): Observable<any>{
-        return this.http.get(`http://localhost:8080/api/inversion/exchange/transactions/${id}`);
+        return this.http.get(`/api/inversion/exchange/transactions/${id}`);
     }
 
     search(searchCriteria): Observable<any>{
@@ -21,7 +21,7 @@ export class ExchangeTransactionManagerService {
         params = params.append('max', searchCriteria.pagination.max)
             .append('offset', searchCriteria.pagination.offset);
         
-        return this.http.get<any>('http://localhost:8080/api/inversion/exchange/transactions', {params: params}).pipe(map(e => {
+        return this.http.get<any>('/api/inversion/exchange/transactions', {params: params}).pipe(map(e => {
             console.log('EEEEEEEEE');
             console.log(e);
             e.results.results.forEach(function(element, index){
@@ -36,7 +36,7 @@ export class ExchangeTransactionManagerService {
     }
 
     save(transaction: any, transactionType: string): Observable<any> {
-        return this.http.post('http://localhost:8080/api/inversion/exchange/transactions', transaction, {params: new HttpParams().set('type', transactionType)});
+        return this.http.post('/api/inversion/exchange/transactions', transaction, {params: new HttpParams().set('type', transactionType)});
     }
 
     calculateSourceAmount(transaction: any): Observable<any> {
@@ -50,7 +50,7 @@ export class ExchangeTransactionManagerService {
     }
 
     getInversionSummary(): Observable<any> {
-        return this.http.get<any>('http://localhost:8080/api/inversion/exchange/summary').pipe(
+        return this.http.get<any>('/api/inversion/exchange/summary').pipe(
         map(response => response.results),
         filter(response => response.summary != null && response.total != null), 
         switchMap((response: any) => {
@@ -135,10 +135,10 @@ export class ExchangeTransactionManagerService {
 
             if (calculationType == 'TARGET_AMOUNT'){
                 params = params.append('sourceAmount', transaction.sourceAmount);
-                result = this.http.get('http://localhost:8080/api/inversion/exchange/transactions/helper/calculateTargetAmount', {params: params});
+                result = this.http.get('/api/inversion/exchange/transactions/helper/calculateTargetAmount', {params: params});
             } else if (calculationType == 'SOURCE_AMOUNT'){
                 params = params.append('targetAmount', transaction.targetAmount);
-                result = this.http.get('http://localhost:8080/api/inversion/exchange/transactions/helper/calculateSourceAmount', {params: params});
+                result = this.http.get('/api/inversion/exchange/transactions/helper/calculateSourceAmount', {params: params});
             }
         }
         
