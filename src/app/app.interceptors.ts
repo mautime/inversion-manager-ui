@@ -22,27 +22,28 @@ export class AuthorizationInterceptor implements HttpInterceptor {
         //console.log(token);
         if (request.url.startsWith('/api') && !request.url.startsWith('/api/data/coinlist')){
             clonedRequest = request.clone({
-                url: 'http://ec2-18-188-47-234.us-east-2.compute.amazonaws.com:8080' + request.url, 
+                //url: 'http://ec2-18-188-47-234.us-east-2.compute.amazonaws.com:8080' + request.url, 
                 //url: 'http://NXL90734.am.freescale.net:8080' + request.url, 
+                url: 'http://localhost:8080' + request.url, 
                 headers: request.headers.set('Authorization', 'Bearer ' + token)
             });
 
-            console.log('clonedREquest');
-            console.log(clonedRequest);
         } else if (request.url.startsWith('/oauth')){
             clonedRequest = request.clone({
-                url: 'http://ec2-18-188-47-234.us-east-2.compute.amazonaws.com:9090' + request.url
+                //url: 'http://ec2-18-188-47-234.us-east-2.compute.amazonaws.com:9090' + request.url
+                url: 'http://localhost:9090' + request.url
             });
         }
 
         if (clonedRequest){
-            return next.handle(clonedRequest).pipe(catchError((error, caught) => {
 
+            return next.handle(clonedRequest).pipe(catchError((error, caught) => {
+                
                 if (error instanceof HttpErrorResponse){
                     
                     switch((<HttpErrorResponse> error).status){
                         case 401:
-                            return this.handle401(request, next);
+                            return this.handle401(clonedRequest, next);
                     }
 
                 } else {
