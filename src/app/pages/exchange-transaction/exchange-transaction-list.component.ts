@@ -1,7 +1,7 @@
 import { BaseComponent } from "../base.component";
 import { OnInit, ViewChild, Component } from "@angular/core";
 import { MatSnackBar, MatTableDataSource, MatPaginator } from "@angular/material";
-import { ExchangeTransactionManagerService } from "../../services/exchnage-transaction.service";
+import { ExchangeTransactionManagerService } from "../../services/exchange-transaction.service";
 import {merge} from 'rxjs/observable/merge';
 
 @Component({

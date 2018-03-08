@@ -1,5 +1,5 @@
 import { OnInit, Component, ViewChild, AfterViewInit } from "@angular/core";
-import { ExchangeTransactionManagerService } from "../../services/exchnage-transaction.service";
+import { ExchangeTransactionManagerService } from "../../services/exchange-transaction.service";
 import { DataCatalogService } from "../../services/data-catalog.service";
 import { BaseComponent } from "../base.component";
 import { MatSnackBar, MatTabGroup, MatTab } from "@angular/material";

@@ -38,7 +38,7 @@ import {HomeComponent} from './pages/home/home.component';
 import { ExchangeTransactionComponent } from './pages/exchange-transaction/exchange-transaction.component';
 
 import {DataCatalogService} from './services/data-catalog.service';
-import { ExchangeTransactionManagerService } from './services/exchnage-transaction.service';
+import { ExchangeTransactionManagerService } from './services/exchange-transaction.service';
 
 import {routesModule} from './app.routes';
 import { BaseComponent } from './pages/base.component';

@@ -1,6 +1,6 @@
 import { OnInit, Component, ViewChild } from "@angular/core";
 import { DataCatalogService } from "../../services/data-catalog.service";
-import { ExchangeTransactionManagerService } from "../../services/exchnage-transaction.service";
+import { ExchangeTransactionManagerService } from "../../services/exchange-transaction.service";
 import { MatTable, MatTableDataSource, MatPaginator } from "@angular/material";
 
 import {merge} from 'rxjs/observable/merge';
