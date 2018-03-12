@@ -19,7 +19,9 @@ export class ExchangeTransactionManagerService {
         let params = new HttpParams();
 
         params = params.append('max', searchCriteria.pagination.max)
-            .append('offset', searchCriteria.pagination.offset);
+            .append('offset', searchCriteria.pagination.offset)
+            .append('sort', searchCriteria.pagination.sort || 'transactionDate')
+            .append('dir', searchCriteria.pagination.dir ? searchCriteria.pagination.dir.toUpperCase() : null);
         
         return this.http.get<any>('/api/inversion/exchange/transactions', {params: params}).pipe(map(e => {
             console.log('EEEEEEEEE');

@@ -1,6 +1,6 @@
 import { BaseComponent } from "../base.component";
 import { OnInit, ViewChild, Component, EventEmitter } from "@angular/core";
-import { MatSnackBar, MatTableDataSource, MatPaginator } from "@angular/material";
+import { MatSnackBar, MatTableDataSource, MatPaginator, MatSort } from "@angular/material";
 import { ExchangeTransactionManagerService } from "../../services/exchange-transaction.service";
 import {merge} from 'rxjs/observable/merge';
 
@@ -9,7 +9,6 @@ import {merge} from 'rxjs/observable/merge';
     templateUrl: './exchange-transaction-list.component.html'
 })
 export class ExchangeTransactionListComponent extends BaseComponent implements OnInit {
-    searchQuery: string;
     searchCriteria: any;
     exchangeTransactionsDataSource: MatTableDataSource<any>;
 
@@ -17,6 +16,9 @@ export class ExchangeTransactionListComponent extends BaseComponent implements O
 
     @ViewChild('exchangeTransactionsTablePaginator')
     exchangeTransactionsTablePaginator: MatPaginator;
+
+    @ViewChild('exchangeTransactionsTableSort')
+    exchangeTransactionsTableSort: MatSort;
 
     constructor(private exchangeTransactionService: ExchangeTransactionManagerService, snackBar: MatSnackBar){
         super(snackBar);
@@ -40,7 +42,8 @@ export class ExchangeTransactionListComponent extends BaseComponent implements O
 
         this._refreshTable();
 
-        merge(this.exchangeTransactionsTablePaginator.page, this.searchEvent).subscribe(response => {
+        console.log(this.exchangeTransactionsTableSort);
+        merge(this.exchangeTransactionsTablePaginator.page, this.exchangeTransactionsTableSort.sortChange, this.searchEvent).subscribe(response => {
             console.log('merge');
             console.log(response);
             this._refreshTable();
@@ -56,7 +59,8 @@ export class ExchangeTransactionListComponent extends BaseComponent implements O
         this.searchCriteria.pagination = {
             max: this.exchangeTransactionsTablePaginator.pageSize, 
             offset: (this.exchangeTransactionsTablePaginator.pageIndex) * this.exchangeTransactionsTablePaginator.pageSize, 
-            query: this.searchQuery
+            sort: this.exchangeTransactionsTableSort.active, 
+            dir: this.exchangeTransactionsTableSort.direction
         };
 
         this.exchangeTransactionService.search(this.searchCriteria).subscribe(response => {

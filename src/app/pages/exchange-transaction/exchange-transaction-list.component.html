@@ -6,42 +6,37 @@
         <mat-divider></mat-divider>
         <mat-card-content>
             <div fxLayout="column" fxLayoutGap="10px">
-                <mat-form-field fxLayout="row" fxLayoutAlign="end">
-                    <input matInput name="searchQueryInput" [(ngModel)]="searchQuery" placeholder="Search"/>
-                    <button mat-icon-button matSuffix (click)="search()">
-                        <mat-icon>search</mat-icon>
-                    </button>
-                </mat-form-field>
                 <div fxLayout="column">
-                    <mat-table #table [dataSource]="exchangeTransactionsDataSource">
+                    <mat-table #table [dataSource]="exchangeTransactionsDataSource" 
+                        #exchangeTransactionsTableSort="matSort" matSort matSortActive="transactionDate" matSortDisableClear matSortDirection="desc">
                         <ng-container matColumnDef="sourceAmount">
-                            <mat-header-cell *matHeaderCellDef>Amount</mat-header-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Amount</mat-header-cell>
                             <mat-cell *matCellDef="let element"> {{element.sourceAmount | currency}} USD</mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="transactionType">
-                                <mat-header-cell *matHeaderCellDef>Type</mat-header-cell>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Type</mat-header-cell>
                                 <mat-cell *matCellDef="let element">{{element.transactionType}}</mat-cell>
                             </ng-container>
                         <ng-container matColumnDef="targetAmount">
-                            <mat-header-cell *matHeaderCellDef>Amount</mat-header-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Amount</mat-header-cell>
                             <mat-cell *matCellDef="let element">
                                 <div>{{element.targetAmount}} {{element.symbol.symbol}}</div>
                             </mat-cell>
                         </ng-container>
-                        <ng-container matColumnDef="exchangeSymbol">
-                            <mat-header-cell *matHeaderCellDef>Exchange Symbol</mat-header-cell>
+                        <ng-container matColumnDef="symbol">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Exchange Symbol</mat-header-cell>
                             <mat-cell *matCellDef="let element">
                                 <img [src]="element.symbolLogo" style="width: 25px;"/>
                             </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="transactionDate">
-                            <mat-header-cell *matHeaderCellDef>Transaction Date</mat-header-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Transaction Date</mat-header-cell>
                             <mat-cell *matCellDef="let element">
                                 <div>{{element.transactionDate | date: 'MM-dd-yyyy'}}</div>
                             </mat-cell>
                         </ng-container>
-                        <mat-header-row *matHeaderRowDef="['transactionType', 'exchangeSymbol', 'sourceAmount', 'targetAmount', 'transactionDate']"></mat-header-row>
-                        <mat-row *matRowDef="let row; columns: ['transactionType', 'exchangeSymbol', 'sourceAmount', 'targetAmount', 'transactionDate'];"></mat-row>
+                        <mat-header-row *matHeaderRowDef="['transactionType', 'symbol', 'sourceAmount', 'targetAmount', 'transactionDate']"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: ['transactionType', 'symbol', 'sourceAmount', 'targetAmount', 'transactionDate'];"></mat-row>
                     </mat-table>
                     <mat-paginator #exchangeTransactionsTablePaginator
                         [pageSize]="10">
