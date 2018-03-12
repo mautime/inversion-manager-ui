@@ -6,7 +6,7 @@
         <mat-divider></mat-divider>
         <mat-card-content>
             <div fxLayout="column" fxLayoutGap="10px" *ngIf="inversionSummary">
-                <mat-list fxLayout="row" fxLayoutAlign="end">
+                <mat-list fxLayout.gt-md="row" fxLayoutAlign="end" fxLayout.lt-md="column">
                     <mat-list-item>
                         <div fxLayout="row" fxLayoutGap="25px" fxLayoutAlign="start center">
                             <div><mat-icon class="mat-36">account_balance_wallet</mat-icon></div>

@@ -34,8 +34,14 @@
                                 <img [src]="element.symbolLogo" style="width: 25px;"/>
                             </mat-cell>
                         </ng-container>
-                        <mat-header-row *matHeaderRowDef="['transactionType', 'exchangeSymbol', 'sourceAmount', 'targetAmount']"></mat-header-row>
-                        <mat-row *matRowDef="let row; columns: ['transactionType', 'exchangeSymbol', 'sourceAmount', 'targetAmount'];"></mat-row>
+                        <ng-container matColumnDef="transactionDate">
+                            <mat-header-cell *matHeaderCellDef>Transaction Date</mat-header-cell>
+                            <mat-cell *matCellDef="let element">
+                                <div>{{element.transactionDate | date: 'MM-dd-yyyy'}}</div>
+                            </mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="['transactionType', 'exchangeSymbol', 'sourceAmount', 'targetAmount', 'transactionDate']"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: ['transactionType', 'exchangeSymbol', 'sourceAmount', 'targetAmount', 'transactionDate'];"></mat-row>
                     </mat-table>
                     <mat-paginator #exchangeTransactionsTablePaginator
                         [pageSize]="10">
