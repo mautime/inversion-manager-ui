@@ -27,7 +27,8 @@ import {
   MatAutocompleteModule, 
   MatTabsModule,
   MatMenuModule, 
-  MatSortModule
+  MatSortModule,
+  MatChipsModule
 } from '@angular/material';
 
 import { AuthorizationInterceptor } from './app.interceptors';
@@ -95,7 +96,8 @@ import { ProfileFormComponent } from './components/profile/profile-form.componen
     MatTabsModule, 
     MatAutocompleteModule, 
     MatMenuModule, 
-    MatSortModule
+    MatSortModule, 
+    MatChipsModule, 
     routesModule
   ], 
   providers: [UtilService, DataCatalogService, CryptoCoinService, TypeaheadService,ExchangeTransactionManagerService, ProfileService, AuthorizationService, AuthorizationRouteActivatorService, {provide: HTTP_INTERCEPTORS, useClass: AuthorizationInterceptor, multi: true}],

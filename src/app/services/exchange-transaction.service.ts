@@ -5,10 +5,11 @@ import { map, tap, switchMap, mergeMap, filter, finalize, take } from "rxjs/oper
 import { Injectable } from "@angular/core";
 import { CryptoCoinService } from "./crypto-coin.service";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { UtilService } from "./util.service";
 
 @Injectable()
 export class ExchangeTransactionManagerService {
-    constructor(private http: HttpClient, private cryptoCoinService: CryptoCoinService){}
+    constructor(private http: HttpClient, private cryptoCoinService: CryptoCoinService, private utilService: UtilService){}
 
     get(id: number): Observable<any>{
         return this.http.get(`/api/inversion/exchange/transactions/${id}`);
@@ -23,6 +24,20 @@ export class ExchangeTransactionManagerService {
             .append('sort', searchCriteria.pagination.sort || 'transactionDate')
             .append('dir', searchCriteria.pagination.dir ? searchCriteria.pagination.dir.toUpperCase() : null);
         
+            if (searchCriteria.transactionDateFrom){
+                console.log('TRANSACTION DATE FROM');
+                params = params.append('transactionDateFrom', this.utilService.format(searchCriteria.transactionDateFrom));
+            }
+
+            if (searchCriteria.transactionDateTo){
+                console.log('TRANSACTION DATE TO');
+                params = params.append('transactionDateTo', this.utilService.format(searchCriteria.transactionDateTo));
+            }
+
+            if (searchCriteria.symbols) {
+                params = params.append('symbols', searchCriteria.symbols.join(','));
+            }
+
         return this.http.get<any>('/api/inversion/exchange/transactions', {params: params}).pipe(map(e => {
             console.log('EEEEEEEEE');
             console.log(e);

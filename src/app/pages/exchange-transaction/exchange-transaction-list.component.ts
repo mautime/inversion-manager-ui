@@ -1,8 +1,13 @@
 import { BaseComponent } from "../base.component";
 import { OnInit, ViewChild, Component, EventEmitter } from "@angular/core";
-import { MatSnackBar, MatTableDataSource, MatPaginator, MatSort } from "@angular/material";
+import { MatSnackBar, MatTableDataSource, MatPaginator, MatSort, MatAutocomplete, MatChip, MatChipList, MatInput, MatChipInputEvent } from "@angular/material";
 import { ExchangeTransactionManagerService } from "../../services/exchange-transaction.service";
 import {merge} from 'rxjs/observable/merge';
+import { Observable } from "rxjs/Observable";
+import { CryptoCoinService } from "../../services/crypto-coin.service";
+import { TypeaheadService } from "../../services/typeahead.service";
+import { filter, take } from "rxjs/operators";
+import {ENTER, COMMA} from '@angular/cdk/keycodes';
 
 @Component({
     selector: 'exchange-transaction-list', 
@@ -10,9 +15,14 @@ import {merge} from 'rxjs/observable/merge';
 })
 export class ExchangeTransactionListComponent extends BaseComponent implements OnInit {
     searchCriteria: any;
+    symbols: Observable<any[]>;
+    
     exchangeTransactionsDataSource: MatTableDataSource<any>;
 
     searchEvent: EventEmitter<any> = new EventEmitter<any>();
+
+    @ViewChild('searchSymbolAutocomplete')
+    searchSymbolAutocomplete: MatAutocomplete;
 
     @ViewChild('exchangeTransactionsTablePaginator')
     exchangeTransactionsTablePaginator: MatPaginator;
@@ -20,14 +30,15 @@ export class ExchangeTransactionListComponent extends BaseComponent implements O
     @ViewChild('exchangeTransactionsTableSort')
     exchangeTransactionsTableSort: MatSort;
 
-    constructor(private exchangeTransactionService: ExchangeTransactionManagerService, snackBar: MatSnackBar){
+    constructor(private exchangeTransactionService: ExchangeTransactionManagerService, private typeaheadService: TypeaheadService, snackBar: MatSnackBar){
         super(snackBar);
 
         this.searchCriteria = {
             pagination: {
                 max: 10, 
                 offset: 0
-            }
+            }, 
+            symbols: []
         };
 
         this.exchangeTransactionsDataSource = new MatTableDataSource<any>();
@@ -38,21 +49,46 @@ export class ExchangeTransactionListComponent extends BaseComponent implements O
     }
 
     ngAfterViewInit() {
-        //this.exchangeTransactionsTableDataSource.paginator = this.exchangeTransactionsTablePaginator;
-
         this._refreshTable();
 
-        console.log(this.exchangeTransactionsTableSort);
         merge(this.exchangeTransactionsTablePaginator.page, this.exchangeTransactionsTableSort.sortChange, this.searchEvent).subscribe(response => {
             console.log('merge');
             console.log(response);
             this._refreshTable();
-            //this.exchangeTransactionsTableDataSource.data = [];
+        });
+
+        this.searchSymbolAutocomplete.optionSelected.subscribe(item => {
+            console.log('entra2');
+            console.log(item);
+            this.searchCriteria.symbols.push(item.option.value);
+            this._resetPagination();
+            this._refreshTable();
         });
     }
 
-    search(query: string){
-        this.searchEvent.emit(query);
+    search(){
+        this.searchEvent.emit({searchCriteria: this.searchCriteria});
+    }
+
+    add(event: MatChipInputEvent){
+
+        if (event.input){
+            event.input.value = '';
+        }
+    }
+
+    remove(symbol: any): void {
+        let index = this.searchCriteria.symbols.indexOf(symbol);
+        if (index >= 0) {
+            this.searchCriteria.symbols.splice(index, 1);
+
+            this._resetPagination();
+            this._refreshTable();
+        }
+    }
+
+    onSearchSymbol($event){
+        this.symbols = this.typeaheadService.getCoins($event);
     }
 
     private _refreshTable(){
@@ -71,5 +107,12 @@ export class ExchangeTransactionListComponent extends BaseComponent implements O
 
             //this.exchangeTransactionsTableDataSource._updatePaginator(30);
         });
+    }
+
+    private _resetPagination(){
+        this.searchCriteria.pagination = {
+            max: 10, 
+            offset: 0
+        }
     }
 }
