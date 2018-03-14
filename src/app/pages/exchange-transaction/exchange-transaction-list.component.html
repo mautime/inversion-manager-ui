@@ -10,12 +10,12 @@
                     <mat-form-field>
                         <mat-chip-list #selectedSymbolChipList>
                             <mat-chip *ngFor="let symbol of searchCriteria.symbols" selectable="false"
-                                    [removable]="true" (remove)="remove(symbol)">
+                                    [removable]="true" (remove)="removeChip(symbol)">
                                 {{symbol}}
                                 <mat-icon matChipRemove>cancel</mat-icon>
                             </mat-chip>
                             <input type="text" #searchSymbolAutocompleteInput 
-                                    [matChipInputFor]="selectedSymbolChipList" [matChipInputSeparatorKeyCodes]="[13]" [matChipInputAddOnBlur]="false" (matChipInputTokenEnd)="add($event)"
+                                    [matChipInputFor]="selectedSymbolChipList" [matChipInputSeparatorKeyCodes]="[13]" [matChipInputAddOnBlur]="false" (matChipInputTokenEnd)="clearChipInput($event)"
                                     placeholder="Search and pick..." matInput [(ngModel)]="selectedSymbol" (ngModelChange)="onSearchSymbol($event)" [matAutocomplete]="searchSymbolAutocomplete">
                                 <mat-autocomplete #searchSymbolAutocomplete="matAutocomplete" autoActiveFirstOption>
                                     <mat-option *ngFor="let option of symbols | async" [value]="option.symbol">
@@ -70,8 +70,14 @@
                                 <div>{{element.transactionDate | date: 'MM-dd-yyyy'}}</div>
                             </mat-cell>
                         </ng-container>
-                        <mat-header-row *matHeaderRowDef="['transactionType', 'symbol', 'sourceAmount', 'targetAmount', 'transactionDate']"></mat-header-row>
-                        <mat-row *matRowDef="let row; columns: ['transactionType', 'symbol', 'sourceAmount', 'targetAmount', 'transactionDate'];"></mat-row>
+                        <ng-container matColumnDef="action">
+                            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                            <mat-cell *matCellDef="let element">
+                                <div><a mat-icon-button (click)="delete(element.id)" ><mat-icon>delete</mat-icon></a></div>
+                            </mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="['transactionType', 'symbol', 'sourceAmount', 'targetAmount', 'transactionDate', 'action']"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: ['transactionType', 'symbol', 'sourceAmount', 'targetAmount', 'transactionDate', 'action'];"></mat-row>
                     </mat-table>
                     <mat-paginator #exchangeTransactionsTablePaginator
                         [pageSize]="10">

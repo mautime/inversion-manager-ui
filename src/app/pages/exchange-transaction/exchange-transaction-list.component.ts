@@ -6,8 +6,10 @@ import {merge} from 'rxjs/observable/merge';
 import { Observable } from "rxjs/Observable";
 import { CryptoCoinService } from "../../services/crypto-coin.service";
 import { TypeaheadService } from "../../services/typeahead.service";
-import { filter, take } from "rxjs/operators";
+import { filter, take, map } from "rxjs/operators";
 import {ENTER, COMMA} from '@angular/cdk/keycodes';
+import { SuccessMessage } from "../../model/success-message.model";
+import { ErrorMessage } from "../../model/error-message.model";
 
 @Component({
     selector: 'exchange-transaction-list', 
@@ -70,14 +72,26 @@ export class ExchangeTransactionListComponent extends BaseComponent implements O
         this.searchEvent.emit({searchCriteria: this.searchCriteria});
     }
 
-    add(event: MatChipInputEvent){
+    delete(id: number){
+        this.exchangeTransactionService.delete(id).pipe(map(response => response.results)).subscribe(response => {
+            if (response === 'success'){
+                this.showSuccessMessage(new SuccessMessage(`Transaction ${id} has been deleted`));
+            }
+
+            this._refreshTable();
+        }, error => {
+            this.showErrorMessage(new ErrorMessage(`Unexpected exception while deleting transaction`));
+        });
+    }
+
+    clearChipInput(event: MatChipInputEvent){
 
         if (event.input){
             event.input.value = '';
         }
     }
 
-    remove(symbol: any): void {
+    removeChip(symbol: any): void {
         let index = this.searchCriteria.symbols.indexOf(symbol);
         if (index >= 0) {
             this.searchCriteria.symbols.splice(index, 1);

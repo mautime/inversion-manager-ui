@@ -56,6 +56,10 @@ export class ExchangeTransactionManagerService {
         return this.http.post('/api/inversion/exchange/transactions', transaction, {params: new HttpParams().set('type', transactionType)});
     }
 
+    delete(id: number): Observable<any> {
+        return this.http.delete(`/api/inversion/exchange/transactions/${id}`);
+    }
+
     calculateSourceAmount(transaction: any): Observable<any> {
         transaction.sourceAmount = null;
         return this._calculateAmount(transaction, 'SOURCE_AMOUNT');
