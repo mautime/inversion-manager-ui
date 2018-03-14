@@ -9,6 +9,7 @@ import { Router } from "@angular/router";
 import { FormGroup } from "@angular/forms";
 import { ExchangeTransactionFormComponent } from "../../components/exchange-transaction-form/exchange-transaction-form.component";
 import { CryptoCoinService } from "../../services/crypto-coin.service";
+import { Observable } from "rxjs/Observable";
 
 @Component({
     selector: 'exchange-transaction', 
@@ -19,7 +20,7 @@ export class ExchangeTransactionComponent extends BaseComponent implements OnIni
 
     transaction: any;
     exchangeSymbols: any[];
-    exchangeTransactionTypes: any[];
+    exchangeTransactionTypes: Observable<any[]>;
 
     @ViewChild(ExchangeTransactionFormComponent)
     form: ExchangeTransactionFormComponent;

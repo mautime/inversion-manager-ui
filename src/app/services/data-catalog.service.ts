@@ -10,11 +10,14 @@ export class DataCatalogService {
         return this.http.get('/api/data/exchange/symbols');
     }
 
-    getExchangeTransactionTypes(): any[] {
-        return [{
-            id: 'BUY', name: 'BUY'
-        }, {
-            id: 'SELL', name: 'SELL'
-        }];
+    getExchangeTransactionTypes(): Observable<any[]> {
+        return Observable.create(subscriber => {
+            subscriber.next([{
+                id: 'BUY', name: 'BUY'
+            }, {
+                id: 'SELL', name: 'SELL'
+            }]);
+            subscriber.complete();
+        });
     }
 }

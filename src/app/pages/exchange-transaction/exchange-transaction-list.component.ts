@@ -10,13 +10,16 @@ import { filter, take, map } from "rxjs/operators";
 import {ENTER, COMMA} from '@angular/cdk/keycodes';
 import { SuccessMessage } from "../../model/success-message.model";
 import { ErrorMessage } from "../../model/error-message.model";
+import { DataCatalogService } from "../../services/data-catalog.service";
 
 @Component({
     selector: 'exchange-transaction-list', 
     templateUrl: './exchange-transaction-list.component.html'
 })
 export class ExchangeTransactionListComponent extends BaseComponent implements OnInit {
+
     searchCriteria: any;
+    transactionTypes: Observable<any[]>;
     symbols: Observable<any[]>;
     
     exchangeTransactionsDataSource: MatTableDataSource<any>;
@@ -32,7 +35,7 @@ export class ExchangeTransactionListComponent extends BaseComponent implements O
     @ViewChild('exchangeTransactionsTableSort')
     exchangeTransactionsTableSort: MatSort;
 
-    constructor(private exchangeTransactionService: ExchangeTransactionManagerService, private typeaheadService: TypeaheadService, snackBar: MatSnackBar){
+    constructor(private exchangeTransactionService: ExchangeTransactionManagerService, private dataCatalogService: DataCatalogService, private typeaheadService: TypeaheadService, snackBar: MatSnackBar){
         super(snackBar);
 
         this.searchCriteria = {
@@ -40,6 +43,7 @@ export class ExchangeTransactionListComponent extends BaseComponent implements O
                 max: 10, 
                 offset: 0
             }, 
+            transactionType: 0, 
             symbols: []
         };
 
@@ -48,6 +52,8 @@ export class ExchangeTransactionListComponent extends BaseComponent implements O
 
     ngOnInit(){
         console.log('ExchangeTransactionListComponent#ngOnInit');
+        
+        this.transactionTypes = this.dataCatalogService.getExchangeTransactionTypes();
     }
 
     ngAfterViewInit() {

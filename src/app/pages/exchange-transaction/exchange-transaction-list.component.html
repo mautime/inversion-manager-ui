@@ -6,40 +6,57 @@
         <mat-divider></mat-divider>
         <mat-card-content style="padding-top: 10px;">
             <div fxLayout="column" fxLayoutGap="10px">
-                <div fxLayout="column">
-                    <mat-form-field>
-                        <mat-chip-list #selectedSymbolChipList>
-                            <mat-chip *ngFor="let symbol of searchCriteria.symbols" selectable="false"
-                                    [removable]="true" (remove)="removeChip(symbol)">
-                                {{symbol}}
-                                <mat-icon matChipRemove>cancel</mat-icon>
-                            </mat-chip>
-                            <input type="text" #searchSymbolAutocompleteInput 
-                                    [matChipInputFor]="selectedSymbolChipList" [matChipInputSeparatorKeyCodes]="[13]" [matChipInputAddOnBlur]="false" (matChipInputTokenEnd)="clearChipInput($event)"
-                                    placeholder="Search and pick..." matInput [(ngModel)]="selectedSymbol" (ngModelChange)="onSearchSymbol($event)" [matAutocomplete]="searchSymbolAutocomplete">
-                                <mat-autocomplete #searchSymbolAutocomplete="matAutocomplete" autoActiveFirstOption>
-                                    <mat-option *ngFor="let option of symbols | async" [value]="option.symbol">
-                                        <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
-                                            <img [src]="option.logo" style="width: 30px; height: 30px;"/>
-                                            <div>{{ option.symbol}} - {{option.name}}</div>
-                                        </div>
-                                    </mat-option>
-                                </mat-autocomplete>
-                        </mat-chip-list>
-                    </mat-form-field>
-                    <div fxLayout="row" fxLayoutGap="10px">
-                        <mat-form-field>
-                            <input matInput [matDatepicker]="transactionDateFrom" [(ngModel)]="searchCriteria.transactionDateFrom" placeholder="From date">
-                            <mat-datepicker-toggle matSuffix [for]="transactionDateFrom"></mat-datepicker-toggle>
-                            <mat-datepicker #transactionDateFrom></mat-datepicker>
-                        </mat-form-field>
-                        <mat-form-field>
-                            <input matInput [matDatepicker]="transactionDateTo" [(ngModel)]="searchCriteria.transactionDateTo" placeholder="To date">
-                            <mat-datepicker-toggle matSuffix [for]="transactionDateTo"></mat-datepicker-toggle>
-                            <mat-datepicker #transactionDateTo></mat-datepicker>
-                        </mat-form-field>
+                <div fxLayout="row" fxLayoutAlign="center">
+                    <div fxLayout="column" fxFlex="50" fxFlexAlign="center">
+                        <div fxLayout="row" fxLayoutGap="10px">
+                            <mat-form-field fxFlex="80">
+                                <mat-chip-list #selectedSymbolChipList>
+                                    <mat-chip *ngFor="let symbol of searchCriteria.symbols" selectable="false"
+                                            [removable]="true" (remove)="removeChip(symbol)">
+                                        {{symbol}}
+                                        <mat-icon matChipRemove>cancel</mat-icon>
+                                    </mat-chip>
+                                    <input type="text" #searchSymbolAutocompleteInput 
+                                            [matChipInputFor]="selectedSymbolChipList" [matChipInputSeparatorKeyCodes]="[13]" [matChipInputAddOnBlur]="false" (matChipInputTokenEnd)="clearChipInput($event)"
+                                            placeholder="Search and pick..." matInput [(ngModel)]="selectedSymbol" (ngModelChange)="onSearchSymbol($event)" [matAutocomplete]="searchSymbolAutocomplete">
+                                        <mat-autocomplete #searchSymbolAutocomplete="matAutocomplete" autoActiveFirstOption>
+                                            <mat-option *ngFor="let option of symbols | async" [value]="option.symbol">
+                                                <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
+                                                    <img [src]="option.logo" style="width: 30px; height: 30px;"/>
+                                                    <div>{{ option.symbol}} - {{option.name}}</div>
+                                                </div>
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                </mat-chip-list>
+                            </mat-form-field>
+                            
+                            <div fxFlex="20" fxLayout="row" fxLayoutAlign="end center">
+                                <mat-checkbox [(ngModel)]="showAdvancedOptions">Advanced Options</mat-checkbox>
+                            </div>
+                        </div>
+                        <div [hidden]="!showAdvancedOptions">
+                            <mat-form-field fxFlexFill>
+                                <mat-select placeholder="Transaction Type" [(ngModel)]="searchCriteria.transactionType">
+                                    <mat-option [value]="0">ALL</mat-option>
+                                    <mat-option *ngFor="let transactionType of transactionTypes | async" [value]="transactionType.id">{{transactionType.id}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            
+                            <div fxLayout="row" fxLayoutGap="10px">
+                                <mat-form-field>
+                                    <input matInput [matDatepicker]="transactionDateFrom" [(ngModel)]="searchCriteria.transactionDateFrom" placeholder="From date">
+                                    <mat-datepicker-toggle matSuffix [for]="transactionDateFrom"></mat-datepicker-toggle>
+                                    <mat-datepicker #transactionDateFrom></mat-datepicker>
+                                </mat-form-field>
+                                <mat-form-field>
+                                    <input matInput [matDatepicker]="transactionDateTo" [(ngModel)]="searchCriteria.transactionDateTo" placeholder="To date">
+                                    <mat-datepicker-toggle matSuffix [for]="transactionDateTo"></mat-datepicker-toggle>
+                                    <mat-datepicker #transactionDateTo></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <button mat-raised-button fxFlexFill color="primary" (click)="search()">Search</button>
+                        </div>
                     </div>
-                    <button mat-raised-button fxFlexAlign="end" color="primary" (click)="search()">Search</button>
                 </div>
                 <div fxLayout="column">
                     <mat-table #table [dataSource]="exchangeTransactionsDataSource" 

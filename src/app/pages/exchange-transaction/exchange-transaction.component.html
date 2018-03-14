@@ -9,7 +9,7 @@
             <mat-tab-group (selectedTabChange)="changeTab" fxLayout="column" fxLayoutGap="25px" mat-stretch-tabs>
                     <mat-tab #buyTab label="Buy">
                         <exchange-transaction-buy-form *ngIf="transaction?.transactionType == 'BUY'" [(model)]="transaction"
-                            [transactionTypes]="exchangeTransactionTypes"
+                            [transactionTypes]="exchangeTransactionTypes | async"
                             (onSave)="saveTransaction($event)"
                             (onSaveAndNew)="saveAndNew($event)"
                             (onCancel)="cancelTransaction($event)"
@@ -18,7 +18,7 @@
                     </mat-tab>
                     <mat-tab #sellTab label="Sell">
                         <exchange-transaction-sell-form *ngIf="transaction?.transactionType == 'SELL'" [(model)]="transaction"
-                            [transactionTypes]="exchangeTransactionTypes"
+                            [transactionTypes]="exchangeTransactionTypes | async"
                             (onSave)="saveTransaction($event)"
                             (onSaveAndNew)="saveAndNew($event)"
                             (onCancel)="cancelTransaction($event)"

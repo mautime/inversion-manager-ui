@@ -30,12 +30,15 @@ export class ExchangeTransactionManagerService {
             }
 
             if (searchCriteria.transactionDateTo){
-                console.log('TRANSACTION DATE TO');
                 params = params.append('transactionDateTo', this.utilService.format(searchCriteria.transactionDateTo));
             }
 
             if (searchCriteria.symbols) {
                 params = params.append('symbols', searchCriteria.symbols.join(','));
+            }
+
+            if (searchCriteria.transactionType){
+                params = params.append('transactionType', searchCriteria.transactionType || null);
             }
 
         return this.http.get<any>('/api/inversion/exchange/transactions', {params: params}).pipe(map(e => {

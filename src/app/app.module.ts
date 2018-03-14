@@ -28,7 +28,8 @@ import {
   MatTabsModule,
   MatMenuModule, 
   MatSortModule,
-  MatChipsModule
+  MatChipsModule,
+  MatCheckboxModule
 } from '@angular/material';
 
 import { AuthorizationInterceptor } from './app.interceptors';
@@ -98,6 +99,7 @@ import { ProfileFormComponent } from './components/profile/profile-form.componen
     MatMenuModule, 
     MatSortModule, 
     MatChipsModule, 
+    MatCheckboxModule, 
     routesModule
   ], 
   providers: [UtilService, DataCatalogService, CryptoCoinService, TypeaheadService,ExchangeTransactionManagerService, ProfileService, AuthorizationService, AuthorizationRouteActivatorService, {provide: HTTP_INTERCEPTORS, useClass: AuthorizationInterceptor, multi: true}],
