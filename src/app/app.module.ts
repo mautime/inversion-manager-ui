@@ -29,7 +29,8 @@ import {
   MatMenuModule, 
   MatSortModule,
   MatChipsModule,
-  MatCheckboxModule
+  MatCheckboxModule,
+  MatDialogModule
 } from '@angular/material';
 
 import { AuthorizationInterceptor } from './app.interceptors';
@@ -56,6 +57,7 @@ import { UtilService } from './services/util.service';
 import { ExchangeTransactionListComponent } from './pages/exchange-transaction/exchange-transaction-list.component';
 import { ProfileService } from './services/profile.service';
 import { ProfileFormComponent } from './components/profile/profile-form.component';
+import { ExchangeTransactionDialogComponent } from './components/exchange-transaction-dialog/exchange-transaction-dialog.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +70,7 @@ import { ProfileFormComponent } from './components/profile/profile-form.componen
     ExchangeTransactionFormComponent, 
     ExchangeTransactionBuyFormComponent, 
     ExchangeTransactionSellFormComponent, 
+    ExchangeTransactionDialogComponent, 
     ProfileFormComponent
   ],
   imports: [
@@ -100,8 +103,10 @@ import { ProfileFormComponent } from './components/profile/profile-form.componen
     MatSortModule, 
     MatChipsModule, 
     MatCheckboxModule, 
+    MatDialogModule, 
     routesModule
   ], 
+  entryComponents: [ExchangeTransactionDialogComponent], 
   providers: [UtilService, DataCatalogService, CryptoCoinService, TypeaheadService,ExchangeTransactionManagerService, ProfileService, AuthorizationService, AuthorizationRouteActivatorService, {provide: HTTP_INTERCEPTORS, useClass: AuthorizationInterceptor, multi: true}],
   bootstrap: [MainComponent]
 })

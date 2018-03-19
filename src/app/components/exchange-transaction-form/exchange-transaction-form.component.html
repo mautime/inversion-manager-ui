@@ -52,6 +52,6 @@
     <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end">
         <button mat-button (click)="_cancel()">Cancel</button>
         <button mat-button (click)="_save()" [disabled]="!transactionFormGroup.valid">Save</button>
-        <button mat-button (click)="_saveAndNew()" [disabled]="!transactionFormGroup.valid">Save & New</button>
+        <button mat-button (click)="_saveAndNew()" [disabled]="!transactionFormGroup.valid" *ngIf="!model.id">Save & New</button>
     </div>
 </form>

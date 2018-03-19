@@ -35,10 +35,26 @@ info-message-panel {
     color: #eed3d7;
 }
 
- /* Rules for sizing the icon. */
- .material-icons.mat-18 { font-size: 18px; }
- .material-icons.mat-24 { font-size: 24px; }
- .material-icons.mat-36 { font-size: 36px; }
- .material-icons.mat-48 { font-size: 48px; }
+/* Rules for sizing the icon. */
+.material-icons.mat-18 { font-size: 18px; }
+.material-icons.mat-24 { font-size: 24px; }
+.material-icons.mat-36 { font-size: 36px; }
+.material-icons.mat-48 { font-size: 48px; }
 
- 
+
+.mat-row:hover {
+    background-color: #E8EAF6;
+    color: #7986CB !important;
+}
+
+.mat-row:hover .mat-cell{
+    color: #7986CB !important;
+}
+
+.selected-component {
+    background-color: #7986CB;;
+}
+
+.selected-component .mat-cell{
+    color: #E8EAF6 !important;
+}

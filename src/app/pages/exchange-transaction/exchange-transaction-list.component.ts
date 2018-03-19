@@ -1,6 +1,6 @@
 import { BaseComponent } from "../base.component";
-import { OnInit, ViewChild, Component, EventEmitter } from "@angular/core";
-import { MatSnackBar, MatTableDataSource, MatPaginator, MatSort, MatAutocomplete, MatChip, MatChipList, MatInput, MatChipInputEvent } from "@angular/material";
+import { OnInit, ViewChild, Component, EventEmitter, Inject } from "@angular/core";
+import { MatSnackBar, MatTableDataSource, MatPaginator, MatSort, MatAutocomplete, MatChip, MatChipList, MatInput, MatChipInputEvent, MatSortHeader, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
 import { ExchangeTransactionManagerService } from "../../services/exchange-transaction.service";
 import {merge} from 'rxjs/observable/merge';
 import { Observable } from "rxjs/Observable";
@@ -11,20 +11,26 @@ import {ENTER, COMMA} from '@angular/cdk/keycodes';
 import { SuccessMessage } from "../../model/success-message.model";
 import { ErrorMessage } from "../../model/error-message.model";
 import { DataCatalogService } from "../../services/data-catalog.service";
+import { SelectionModel } from "@angular/cdk/collections";
+import { ExchangeTransactionDialogComponent } from "../../components/exchange-transaction-dialog/exchange-transaction-dialog.component";
 
 @Component({
     selector: 'exchange-transaction-list', 
-    templateUrl: './exchange-transaction-list.component.html'
+    templateUrl: './exchange-transaction-list.component.html', 
+    styleUrls: ['./exchange-transaction-list.component.css']
 })
 export class ExchangeTransactionListComponent extends BaseComponent implements OnInit {
 
     searchCriteria: any;
+    selectedTransaction: any;
     transactionTypes: Observable<any[]>;
     symbols: Observable<any[]>;
     
     exchangeTransactionsDataSource: MatTableDataSource<any>;
 
     searchEvent: EventEmitter<any> = new EventEmitter<any>();
+
+    transactionSelectionModel: SelectionModel<any>;
 
     @ViewChild('searchSymbolAutocomplete')
     searchSymbolAutocomplete: MatAutocomplete;
@@ -35,9 +41,9 @@ export class ExchangeTransactionListComponent extends BaseComponent implements O
     @ViewChild('exchangeTransactionsTableSort')
     exchangeTransactionsTableSort: MatSort;
 
-    constructor(private exchangeTransactionService: ExchangeTransactionManagerService, private dataCatalogService: DataCatalogService, private typeaheadService: TypeaheadService, snackBar: MatSnackBar){
+    constructor(private exchangeTransactionService: ExchangeTransactionManagerService, private dataCatalogService: DataCatalogService, private typeaheadService: TypeaheadService, 
+        private selectedTransactionDialog: MatDialog, snackBar: MatSnackBar){
         super(snackBar);
-
         this.searchCriteria = {
             pagination: {
                 max: 10, 
@@ -48,6 +54,7 @@ export class ExchangeTransactionListComponent extends BaseComponent implements O
         };
 
         this.exchangeTransactionsDataSource = new MatTableDataSource<any>();
+        this.transactionSelectionModel = new SelectionModel<any>(false, []);
     }
 
     ngOnInit(){
@@ -109,6 +116,47 @@ export class ExchangeTransactionListComponent extends BaseComponent implements O
 
     onSearchSymbol($event){
         this.symbols = this.typeaheadService.getCoins($event);
+    }
+
+    selectTransaction(id: number) {
+        this.transactionSelectionModel.toggle(id);
+
+        this.exchangeTransactionService.get(id).subscribe(response => {
+            this.selectedTransaction = response;
+            this._openSelectedTransactionDialog(this.selectedTransaction);
+        });
+    }
+
+    private _openSelectedTransactionDialog(data: any){
+        let dialogRef = this.selectedTransactionDialog.open(ExchangeTransactionDialogComponent, {
+            data: data
+        });
+
+        dialogRef.afterClosed().subscribe(response => {
+            console.log('dialog has been closed');
+            this.transactionSelectionModel.clear();
+        });
+
+        dialogRef.componentInstance.onSaveCompleted.subscribe(response => {
+            console.log('ExchangeTransactionDialogComponent#onSaveCompleted');
+            console.log(response);
+            
+            dialogRef.close();
+            this._refreshTable();
+            this.showSuccessMessage(new SuccessMessage('Transaction has been saved'));
+        });
+
+        dialogRef.componentInstance.onSaveError.subscribe(response => {
+            console.log('ExchangeTransactionDialogComponent#onSaveError');
+            console.log(response);
+            this.showErrorMessage(new ErrorMessage('Unexpected error saving the transaciton'));
+        });
+
+        dialogRef.componentInstance.onUpdateAmountsError.subscribe(response => {
+            console.log('ExchangeTransactionDialogComponent#onUpdateAmountsError');
+            console.log(response);
+            this.showErrorMessage(new ErrorMessage('Error updating amounts. Please check values'));
+        });
     }
 
     private _refreshTable(){

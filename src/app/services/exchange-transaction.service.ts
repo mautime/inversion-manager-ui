@@ -12,7 +12,9 @@ export class ExchangeTransactionManagerService {
     constructor(private http: HttpClient, private cryptoCoinService: CryptoCoinService, private utilService: UtilService){}
 
     get(id: number): Observable<any>{
-        return this.http.get(`/api/inversion/exchange/transactions/${id}`);
+        return this.http.get(`/api/inversion/exchange/transactions/${id}`).pipe(map((response: any) => {
+            return response.results;
+        }));
     }
 
     search(searchCriteria): Observable<any>{

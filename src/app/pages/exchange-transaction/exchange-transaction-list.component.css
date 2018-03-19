@@ -1,0 +1,29 @@
+.mat-column-transactionType {
+    flex: 0 0 100px !important;
+    /*white-space: unset !important;*/
+}
+
+.mat-column-sourceAmount, .mat-column-targetAmount {
+    text-align: right !important;
+    /*flex: 0 0 200px;*/
+    /*white-space: unset !important;*/
+}
+
+.mat-column-transactionType, .mat-column-symbol, .mat-column-transactionDate {
+    text-align: center !important;
+    /*white-space: unset !important;*/
+}
+
+.mat-column-action {
+    flex: 0 0 100px !important;
+    /*white-space: unset !important;*/
+}
+
+::ng-deep .mat-sort-header-container {
+    /*display:flex;*/
+    justify-content:center;
+}
+
+::ng-deep .mat-column-sourceAmount .mat-sort-header-container, ::ng-deep .mat-column-targetAmount .mat-sort-header-container {
+    justify-content: flex-end;
+}

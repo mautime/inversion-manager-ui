@@ -1,4 +1,4 @@
-import { OnInit, Component, Input, EventEmitter, Output, ViewChild } from "@angular/core";
+import { OnInit, Component, Input, EventEmitter, Output, ViewChild, ChangeDetectorRef } from "@angular/core";
 import { MatSelect, MAT_DATE_FORMATS, MAT_NATIVE_DATE_FORMATS, MatAutocomplete, MatInput } from "@angular/material";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { TypeaheadService } from "../../services/typeahead.service";
@@ -41,13 +41,17 @@ export class ExchangeTransactionFormComponent implements OnInit {
     @Output()
     onUpdateAmount: EventEmitter<any> = new EventEmitter<any>(true);
 
-    constructor(private typeaheadService: TypeaheadService){}
+    constructor(private typeaheadService: TypeaheadService, private cdRef: ChangeDetectorRef){}
 
     ngOnInit(){
         console.log('ExchangeTransactionFormComponent#ngOnInit');
 
+        this.model.transactionDate = new Date(this.model.transactionDate);
+
         this.transactionFormGroup = new FormGroup({
-            exchangeSymbolInputAutocompleteInput: new FormControl(), 
+            exchangeSymbolInputAutocompleteInput: new FormControl('', [
+                Validators.required
+            ]), 
             targetAmountInput: new FormControl('', [
                 Validators.required, Validators.pattern('^(\\d*\\.)?\\d+$')
             ]), 
@@ -81,6 +85,8 @@ export class ExchangeTransactionFormComponent implements OnInit {
 
              return this.typeaheadService.getCoins(query);   
         }));
+
+        this.cdRef.detectChanges();
     }
 
     _save(){

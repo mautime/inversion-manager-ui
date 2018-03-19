@@ -63,7 +63,11 @@
                         #exchangeTransactionsTableSort="matSort" matSort matSortActive="transactionDate" matSortDisableClear matSortDirection="desc">
                         <ng-container matColumnDef="sourceAmount">
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Amount</mat-header-cell>
-                            <mat-cell *matCellDef="let element"> {{element.sourceAmount | currency}} USD</mat-cell>
+                            <mat-cell *matCellDef="let element">
+                                <div style="padding-right: 20px;">
+                                    {{element.sourceAmount | currency}} USD
+                                </div>
+                            </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="transactionType">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>Type</mat-header-cell>
@@ -72,7 +76,7 @@
                         <ng-container matColumnDef="targetAmount">
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Amount</mat-header-cell>
                             <mat-cell *matCellDef="let element">
-                                <div>{{element.targetAmount}} {{element.symbol.symbol}}</div>
+                                <div style="padding-right: 20px;">{{element.targetAmount}} {{element.symbol}}</div>
                             </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="symbol">
@@ -89,12 +93,15 @@
                         </ng-container>
                         <ng-container matColumnDef="action">
                             <mat-header-cell *matHeaderCellDef></mat-header-cell>
-                            <mat-cell *matCellDef="let element">
-                                <div><a mat-icon-button (click)="delete(element.id)" ><mat-icon>delete</mat-icon></a></div>
+                            <mat-cell *matCellDef="let element" style="width: 20px;">
+                                <div>
+                                    <a mat-icon-button (click)="delete(element.id)"><mat-icon>delete</mat-icon></a>
+                                </div>
                             </mat-cell>
                         </ng-container>
                         <mat-header-row *matHeaderRowDef="['transactionType', 'symbol', 'sourceAmount', 'targetAmount', 'transactionDate', 'action']"></mat-header-row>
-                        <mat-row *matRowDef="let row; columns: ['transactionType', 'symbol', 'sourceAmount', 'targetAmount', 'transactionDate', 'action'];"></mat-row>
+                        <mat-row *matRowDef="let row; columns: ['transactionType', 'symbol', 'sourceAmount', 'targetAmount', 'transactionDate', 'action'];" (click)="selectTransaction(row.id)"
+                            [ngClass]="{'selected-component': transactionSelectionModel.isSelected(row.id)}"></mat-row>
                     </mat-table>
                     <mat-paginator #exchangeTransactionsTablePaginator
                         [pageSize]="10">

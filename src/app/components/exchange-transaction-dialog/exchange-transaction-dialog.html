@@ -1,0 +1,10 @@
+<exchange-transaction-buy-form [(model)]="transaction" 
+    (onSave)="saveTransaction($event)"
+    (onCancel)="cancelTransaction($event)"
+    (onUpdateAmount)="updateTargetAmount($event)" 
+    *ngIf="transaction && transaction?.transactionType == 'BUY'"></exchange-transaction-buy-form>
+<exchange-transaction-sell-form [(model)]="transaction" 
+    (onSave)="saveTransaction($event)"
+    (onCancel)="cancelTransaction($event)"
+    (onUpdateAmount)="updateSourceAmount($event)"
+    *ngIf="transaction && transaction?.transactionType == 'SELL'"></exchange-transaction-sell-form>

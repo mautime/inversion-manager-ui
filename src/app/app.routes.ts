@@ -32,4 +32,4 @@ const routes: Routes = [{
     canActivate: [AuthorizationRouteActivatorService]
 }];
 
-export const routesModule = RouterModule.forRoot(routes, {useHash: true});
+export const routesModule = RouterModule.forRoot(routes, {useHash: false});
