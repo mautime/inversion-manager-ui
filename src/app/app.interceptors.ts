@@ -63,8 +63,10 @@ export class AuthorizationInterceptor implements HttpInterceptor {
             this.tokenSubject.next(null);
             
             return this.authorizationService.refreshToken().pipe(switchMap(authorization => {
-                
+                console.log('ENTER');
+                console.log(this.authorizationService.isAuthenticated());
                 if (this.authorizationService.isAuthenticated()){
+                    console.log('REFRESH TOKEN');
                     this.tokenSubject.next(this.authorizationService.getAccessToken());
 
                     return next.handle(request.clone({

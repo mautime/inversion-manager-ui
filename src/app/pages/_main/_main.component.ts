@@ -18,11 +18,13 @@ export class MainComponent extends BaseComponent implements OnInit{
     sideNav: MatSidenav;
 
 
-    constructor(private router: Router, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, snackBar: MatSnackBar){
+    constructor(private router: Router, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, public auth: AuthorizationService, snackBar: MatSnackBar){
         super(snackBar);
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
         this.mobileQuery.addListener(this._mobileQueryListener);
+
+        auth.handleAuthentication();
     }
     
     ngOnInit(){
@@ -33,9 +35,15 @@ export class MainComponent extends BaseComponent implements OnInit{
         this.mobileQuery.removeListener(this._mobileQueryListener);
     }
 
-    logout(){
+    login() {
+        this.authService.login();
+    }
+
+    logout() {
         this.authService.logout().subscribe(response => {
-            this.router.navigate(['/login']);
+            console.log('LOGGED OUT');
+            console.log(response);
+            this.router.navigate(['/landing']);
         });
     }
 

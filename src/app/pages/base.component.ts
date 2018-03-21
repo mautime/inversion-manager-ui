@@ -21,7 +21,7 @@ export class BaseComponent {
     constructor(private snackBar: MatSnackBar){
         this.authService = UtilService.injector.get(AuthorizationService);
 
-        this.isAuthenticated$ = this.authService.authenticated();
+        this.isAuthenticated$ = this.authService.isAuthenticatedAsObservable();
     }
     
     showMessage(message: Message){

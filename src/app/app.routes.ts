@@ -2,12 +2,13 @@ import { RouterModule, Routes } from '@angular/router';
 import {HomeComponent} from './pages/home/home.component';
 import { ExchangeTransactionComponent } from './pages/exchange-transaction/exchange-transaction.component';
 import { AuthorizationRouteActivatorService } from './services/auth-route-activator.service';
-import { LoginComponent } from './pages/login/login.component';
 import { ExchangeTransactionListComponent } from './pages/exchange-transaction/exchange-transaction-list.component';
+import { CallbackComponent } from './pages/callback/callback.component';
+import { LandingComponent } from './pages/landing/landing.component';
 
 const routes: Routes = [{
-    path: 'login', 
-    component: LoginComponent
+    path: 'landing', 
+    component: LandingComponent
 }, {
     path: 'home', 
     component: HomeComponent, 
@@ -26,10 +27,12 @@ const routes: Routes = [{
         component: ExchangeTransactionComponent
     }]
 }, {
+    path: 'callback', component: CallbackComponent 
+}, {
     path: '', 
-    redirectTo: '/home', 
+    redirectTo: '/landing', 
     pathMatch: 'full', 
-    canActivate: [AuthorizationRouteActivatorService]
+    //canActivate: [AuthorizationRouteActivatorService]
 }];
 
 export const routesModule = RouterModule.forRoot(routes, {useHash: false});

@@ -1,14 +1,17 @@
 <div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
     <mat-toolbar color="primary" class="example-toolbar">
-        <button mat-icon-button (click)="toggleSideNav()"><mat-icon>menu</mat-icon></button>
+        <button mat-icon-button (click)="toggleSideNav()" *ngIf="isAuthenticated$  | async"><mat-icon>menu</mat-icon></button>
         <h1 class="example-app-name">Responsive App</h1>
         <span class="example-spacer"></span>
+        <div *ngIf="!(isAuthenticated$  | async)">
+            <button mat-button (click)="login()">Login</button>
+        </div>
         <div *ngIf="isAuthenticated$ | async">
             <button mat-icon-button [matMenuTriggerFor]="userProfileMenu">
                 <mat-icon>account_circle</mat-icon>
             </button>
             <mat-menu #userProfileMenu="matMenu">
-                <a mat-icon-button met-menu-item (click)="logout()"><mat-icon>exit_to_app</mat-icon> Logout</a>
+                <a mat-menu-item (click)="logout()"><mat-icon>exit_to_app</mat-icon> Logout</a>
             </mat-menu>
         </div>
     </mat-toolbar>

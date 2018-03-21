@@ -37,7 +37,6 @@ import { AuthorizationInterceptor } from './app.interceptors';
 
 import {ExchangeTransactionFormComponent} from './components/exchange-transaction-form/exchange-transaction-form.component';
 import {MainComponent} from './pages/_main/_main.component';
-import {LoginComponent} from './pages/login/login.component';
 import {HomeComponent} from './pages/home/home.component';
 import { ExchangeTransactionComponent } from './pages/exchange-transaction/exchange-transaction.component';
 
@@ -58,12 +57,15 @@ import { ExchangeTransactionListComponent } from './pages/exchange-transaction/e
 import { ProfileService } from './services/profile.service';
 import { ProfileFormComponent } from './components/profile/profile-form.component';
 import { ExchangeTransactionDialogComponent } from './components/exchange-transaction-dialog/exchange-transaction-dialog.component';
+import { CallbackComponent } from './pages/callback/callback.component';
+import { LandingComponent } from './pages/landing/landing.component';
 
 @NgModule({
   declarations: [
     BaseComponent, 
     MainComponent, 
-    LoginComponent, 
+    LandingComponent, 
+    CallbackComponent,  
     HomeComponent, 
     ExchangeTransactionComponent, 
     ExchangeTransactionListComponent, 
