@@ -6,10 +6,9 @@
         <div *ngIf="!(isAuthenticated$  | async)">
             <button mat-button (click)="login()">Login</button>
         </div>
-        <div *ngIf="isAuthenticated$ | async">
-            <button mat-icon-button [matMenuTriggerFor]="userProfileMenu">
-                <mat-icon>account_circle</mat-icon>
-            </button>
+        <div *ngIf="(isAuthenticated$ | async) && profile">
+            <span style="font-size: 14px;">{{profile.name}}</span>
+            <button mat-icon-button mat-mini-fab [matMenuTriggerFor]="userProfileMenu" [ngStyle]="{'background-image': 'url(' + profile.picture +')', 'background-size': 'cover'}"></button>
             <mat-menu #userProfileMenu="matMenu">
                 <a mat-menu-item (click)="logout()"><mat-icon>exit_to_app</mat-icon> Logout</a>
             </mat-menu>

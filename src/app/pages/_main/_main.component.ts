@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { BaseComponent } from "../base.component";
 import { MatSnackBar, MatSidenav } from "@angular/material";
 import {MediaMatcher} from '@angular/cdk/layout';
+import { Observable } from "rxjs/Observable";
 
 @Component({
     selector: 'main', 
@@ -14,9 +15,10 @@ export class MainComponent extends BaseComponent implements OnInit{
 
     mobileQuery: MediaQueryList;
 
+    profile: any;
+
     @ViewChild('sideNav')
     sideNav: MatSidenav;
-
 
     constructor(private router: Router, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, public auth: AuthorizationService, snackBar: MatSnackBar){
         super(snackBar);
@@ -25,6 +27,10 @@ export class MainComponent extends BaseComponent implements OnInit{
         this.mobileQuery.addListener(this._mobileQueryListener);
 
         auth.handleAuthentication();
+
+        this.authService.getProfile().subscribe(profile => {
+            this.profile = profile;
+        });
     }
     
     ngOnInit(){

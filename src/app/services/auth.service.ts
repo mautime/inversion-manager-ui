@@ -2,7 +2,7 @@ import { Injectable, Injector } from "@angular/core";
 import { Observable } from "rxjs/Observable";
 import * as jwt_decode from 'jwt-decode';
 import { HttpClient } from "@angular/common/http";
-import { map, switchMap, tap, catchError } from "rxjs/operators";
+import { map, switchMap, tap, catchError, filter, take } from "rxjs/operators";
 import { MatMenu } from "@angular/material";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Subscriber } from "rxjs/Subscriber";
@@ -14,6 +14,7 @@ import * as auth0 from 'auth0-js';
 export class AuthorizationService {
 
     private authenticatedFlag: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    private waitForProfile = new BehaviorSubject<any>(null);
 
     auth0 = new auth0.WebAuth({
         clientID: 'uP1HNuJPu6Jb1gYdOK6G0ol8lX3DSEDn',
@@ -55,6 +56,7 @@ export class AuthorizationService {
         */
         this.authenticatedFlag.next(false);
         localStorage.removeItem('authorization');
+        localStorage.removeItem('profile');
         return Observable.create(subscriber => {
             subscriber.next({loggedOut: true});
             subscriber.complete();
@@ -89,8 +91,10 @@ export class AuthorizationService {
     localStorage.setItem('expires_at', expiresAt);*/
     //this.authenticatedFlag.next(true);
 
-    this.authenticatedFlag.next(true);
     localStorage.setItem('authorization', JSON.stringify(authResult));
+    this.authenticatedFlag.next(true);
+
+    this.setProfile();
     }
 
     public isAuthenticated(): boolean {
@@ -110,10 +114,51 @@ export class AuthorizationService {
     getAccessToken(): any {
         return this._getAuthorization()['accessToken'];
     }
+    
+    setProfile(): void {
+        this.waitForProfile.next(null);
+
+        if (!this.getAccessToken()){
+            throw new Error('Access Token must exist to fetch profile');
+        } else {
+
+            this.auth0.client.userInfo(this.getAccessToken(), (error, profile) => {
+                if (profile){
+                    let profileJson = JSON.stringify(profile);
+
+                    localStorage.setItem('profile', profileJson);
+                    this.waitForProfile.next(profile);
+                }
+            });
+        }
+    }
 
     getProfile(): Observable<any> {
-        //return Observable.create(this.auth0.);
-        return null;
+        let profile = null;
+
+        profile = localStorage.getItem('profile');
+
+        if (profile){
+            console.log('THERE IS A PROFILE');
+            console.log(profile);
+
+            return Observable.create(subscriptor => {
+                subscriptor.next(JSON.parse(profile));
+                //subscriptor.complete();
+                
+            });
+        } else {
+
+            return this.waitForProfile.pipe(filter(p => p != null), take(1), switchMap(p => {
+
+                return Observable.create(subscriptor => {
+                    subscriptor.next(p);
+                    //subscriptor.complete();
+                    
+                });
+    
+            }));
+        }
     }
 
     isAccessTokenExpired(): boolean {
