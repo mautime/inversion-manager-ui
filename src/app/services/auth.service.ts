@@ -9,6 +9,7 @@ import { Subscriber } from "rxjs/Subscriber";
 import { ErrorObservable } from "rxjs/observable/ErrorObservable";
 import { Router } from "@angular/router";
 import * as auth0 from 'auth0-js';
+import { ProfileService } from "./profile.service";
 
 @Injectable()
 export class AuthorizationService {
@@ -26,7 +27,7 @@ export class AuthorizationService {
         scope: 'openid profile email offline_access'
       });
     
-      constructor(public router: Router) {
+      constructor(public router: Router, private profileService: ProfileService) {
         this.authenticatedFlag.next(this.isAuthenticated());
       }
 
@@ -34,7 +35,22 @@ export class AuthorizationService {
         this.auth0.parseHash((err, authResult) => {
           if (authResult && authResult.accessToken && authResult.idToken) {
             this.setSession(authResult);
-            this.router.navigate(['/home']);
+
+            this.getProfile().subscribe(profile => {
+                this.profileService.exists(profile.sub).subscribe(exists => {
+
+                    if (!exists){
+                        this.profileService.register({username: profile.sub, firstName: profile.given_name, lastName: profile.family_name}).subscribe(response => {
+                            alert('User registered');
+                            this.router.navigate(['/home']);
+                        });
+                    } else {
+                        this.router.navigate(['/home']);
+                    }
+
+                })
+            });
+            //this.router.navigate(['/home']);
           } else if (err) {
             this.router.navigate(['/home']);
             console.log(err);

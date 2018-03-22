@@ -11,7 +11,7 @@ export class ProfileService {
         return this.http.post('/api/profile', user).pipe(map((response: any) => response.results));
     }
 
-    exists(email: string): Observable<any> {
-        return this.http.get(`/api/profile/check/${email}`).pipe(map((response: any) => response.results));
+    exists(username: string): Observable<any> {
+        return this.http.get(`/api/profile/${username}/exists`).pipe(map((response: any) => response.results));
     }
 }
