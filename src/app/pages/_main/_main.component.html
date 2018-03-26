@@ -1,6 +1,6 @@
 <div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
     <mat-drawer-container class="example-container" *ngIf="isAuthenticated$  | async">
-        <mat-drawer #snav mode="side" [opened]="!mobileQuery.matches">
+        <mat-drawer #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [opened]="!mobileQuery.matches">
             <div class="app-brand-container">
                 <span class="app-title">Inversion Manager</span>
             </div>
@@ -13,12 +13,14 @@
         <mat-drawer-content>
             <mat-toolbar color="primary" class="example-toolbar">
                 <button mat-icon-button (click)="snav.toggle()" [fxHide.gt-sm]="!mobileQuery.matches"><mat-icon>menu</mat-icon></button>
-                <ng-template ngFor let-token [ngForOf]="pageTitle | async" let-i="index" let-last="last">
-                    {{token}} {{!last && token ? '-' : ''}}
-                </ng-template>
+                <span>
+                    <ng-template ngFor let-token [ngForOf]="pageTitle | async" let-i="index" let-last="last">
+                        {{token}} {{!last && token ? '-' : ''}}
+                    </ng-template>
+                </span>
                 <span class="example-spacer"></span>
                 <div *ngIf="profile">
-                    <span style="font-size: 14px;">{{profile.name}}</span>
+                    <span>{{profile.name}}</span>
                     <button mat-icon-button mat-mini-fab [matMenuTriggerFor]="userProfileMenu" [ngStyle]="{'background-image': 'url(' + profile.picture +')', 'background-size': 'cover'}"></button>
                     <mat-menu #userProfileMenu="matMenu">
                         <a mat-menu-item (click)="logout()"><mat-icon>exit_to_app</mat-icon> Logout</a>

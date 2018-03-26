@@ -13,6 +13,8 @@ import { ErrorMessage } from "../../model/error-message.model";
 import { DataCatalogService } from "../../services/data-catalog.service";
 import { SelectionModel } from "@angular/cdk/collections";
 import { ExchangeTransactionDialogComponent } from "../../components/exchange-transaction-dialog/exchange-transaction-dialog.component";
+import { ActivatedRoute } from "@angular/router";
+import { UtilService } from "../../services/util.service";
 
 @Component({
     selector: 'exchange-transaction-list', 
@@ -41,8 +43,10 @@ export class ExchangeTransactionListComponent extends BaseComponent implements O
     @ViewChild('exchangeTransactionsTableSort')
     exchangeTransactionsTableSort: MatSort;
 
-    constructor(private exchangeTransactionService: ExchangeTransactionManagerService, private dataCatalogService: DataCatalogService, private typeaheadService: TypeaheadService, 
-        private selectedTransactionDialog: MatDialog, snackBar: MatSnackBar){
+    constructor(route: ActivatedRoute, private exchangeTransactionService: ExchangeTransactionManagerService, private dataCatalogService: DataCatalogService, 
+            private typeaheadService: TypeaheadService, utilService: UtilService, 
+            private selectedTransactionDialog: MatDialog, snackBar: MatSnackBar){
+
         super(snackBar);
         this.searchCriteria = {
             pagination: {
@@ -55,6 +59,8 @@ export class ExchangeTransactionListComponent extends BaseComponent implements O
 
         this.exchangeTransactionsDataSource = new MatTableDataSource<any>();
         this.transactionSelectionModel = new SelectionModel<any>(false, []);
+
+        utilService.buildTitle(route.snapshot);
     }
 
     ngOnInit(){

@@ -4,8 +4,9 @@
 html, body {
     font-family: "Helvetica","Arial",sans-serif;
     font-size: 14px;
+    line-height: 1;
+    letter-spacing: .02em;
     font-weight: 400;
-    line-height: 20px;
 }
 
 .success-message-panel {
@@ -115,4 +116,11 @@ html, body {
 
 .mat-tab-label {
     font-size: 20px;
+}
+
+.mat-toolbar {
+    font-size: 16px;
+    line-height: 1;
+    letter-spacing: .02em;
+    font-weight: 400;
 }
