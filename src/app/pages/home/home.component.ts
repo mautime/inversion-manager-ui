@@ -8,6 +8,8 @@ import {interval} from 'rxjs/observable/interval';
 import {timer} from 'rxjs/observable/timer';
 import { Observable } from "rxjs/Observable";
 import { switchMap, delay } from "rxjs/operators";
+import { ActivatedRoute } from "@angular/router";
+import { UtilService } from "../../services/util.service";
 
 @Component({
     selector: 'home', 
@@ -20,7 +22,8 @@ export class HomeComponent implements OnInit {
     @ViewChild(MatPaginator)
     exchangeTransactionsTablePaginator: MatPaginator;
 
-    constructor(private dataCatalogService: DataCatalogService, private exchangeTransactionService: ExchangeTransactionManagerService){
+    constructor(private route: ActivatedRoute, private dataCatalogService: DataCatalogService, private exchangeTransactionService: ExchangeTransactionManagerService, private utilService: UtilService){
+        utilService.buildTitle(route.snapshot);
     }
 
     ngOnInit(){

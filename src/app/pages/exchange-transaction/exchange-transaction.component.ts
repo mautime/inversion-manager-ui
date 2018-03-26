@@ -5,11 +5,12 @@ import { BaseComponent } from "../base.component";
 import { MatSnackBar, MatTabGroup, MatTab } from "@angular/material";
 import { ErrorMessage } from "../../model/error-message.model";
 import { SuccessMessage } from "../../model/success-message.model";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { FormGroup } from "@angular/forms";
 import { ExchangeTransactionFormComponent } from "../../components/exchange-transaction-form/exchange-transaction-form.component";
 import { CryptoCoinService } from "../../services/crypto-coin.service";
 import { Observable } from "rxjs/Observable";
+import { UtilService } from "../../services/util.service";
 
 @Component({
     selector: 'exchange-transaction', 
@@ -28,10 +29,12 @@ export class ExchangeTransactionComponent extends BaseComponent implements OnIni
     @ViewChild(MatTabGroup)
     tabGroup: MatTabGroup;
 
-    constructor(private router: Router, private exchangeTransactionService: ExchangeTransactionManagerService, 
-        private dataCatalogService: DataCatalogService, private coinService: CryptoCoinService, 
+    constructor(private router: Router, route: ActivatedRoute, private exchangeTransactionService: ExchangeTransactionManagerService, 
+        private dataCatalogService: DataCatalogService, private coinService: CryptoCoinService, private utilService: UtilService, 
         snackBar: MatSnackBar){
         super(snackBar);
+
+        utilService.buildTitle(route.snapshot);
     }
 
     ngOnInit(){

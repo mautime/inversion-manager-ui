@@ -13,6 +13,9 @@
         <mat-drawer-content>
             <mat-toolbar color="primary" class="example-toolbar">
                 <button mat-icon-button (click)="snav.toggle()" [fxHide.gt-sm]="!mobileQuery.matches"><mat-icon>menu</mat-icon></button>
+                <ng-template ngFor let-token [ngForOf]="pageTitle | async" let-i="index" let-last="last">
+                    {{token}} {{!last && token ? '-' : ''}}
+                </ng-template>
                 <span class="example-spacer"></span>
                 <div *ngIf="profile">
                     <span style="font-size: 14px;">{{profile.name}}</span>

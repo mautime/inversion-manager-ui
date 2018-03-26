@@ -12,19 +12,28 @@ const routes: Routes = [{
 }, {
     path: 'home', 
     component: HomeComponent, 
+    data: {
+        title: 'Dashboard'
+    }, 
     canActivate: [AuthorizationRouteActivatorService]
 }, {
     path: 'exchange-transactions', 
+    data: {
+        title: 'Exchange Transaction'
+    }, 
     canActivate: [AuthorizationRouteActivatorService], 
     children: [{
         path: '', 
-        component: ExchangeTransactionListComponent
-    }, {
-        path: ':id', 
-        component: ExchangeTransactionComponent
+        component: ExchangeTransactionListComponent, 
+        data: {
+            title: 'Search'
+        }
     }, {
         path: 'add', 
-        component: ExchangeTransactionComponent
+        component: ExchangeTransactionComponent, 
+        data: {
+            title: 'Add'
+        }
     }]
 }, {
     path: 'callback', component: CallbackComponent 

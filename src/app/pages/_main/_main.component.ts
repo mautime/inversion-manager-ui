@@ -5,6 +5,7 @@ import { BaseComponent } from "../base.component";
 import { MatSnackBar, MatSidenav } from "@angular/material";
 import {MediaMatcher} from '@angular/cdk/layout';
 import { Observable } from "rxjs/Observable";
+import { UtilService } from "../../services/util.service";
 
 @Component({
     selector: 'main', 
@@ -17,7 +18,9 @@ export class MainComponent extends BaseComponent implements OnInit{
 
     profile: any;
 
-    constructor(private router: Router, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, public auth: AuthorizationService, snackBar: MatSnackBar){
+    pageTitle: Observable<any[]>;
+
+    constructor(private router: Router, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, public auth: AuthorizationService, public utilService: UtilService, snackBar: MatSnackBar){
         super(snackBar);
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -28,6 +31,8 @@ export class MainComponent extends BaseComponent implements OnInit{
         this.authService.getProfile().subscribe(profile => {
             this.profile = profile;
         });
+        
+        this.pageTitle = utilService.getTitle();
     }
     
     ngOnInit(){
@@ -49,6 +54,6 @@ export class MainComponent extends BaseComponent implements OnInit{
             this.router.navigate(['/landing']);
         });
     }
-    
+
     private _mobileQueryListener: () => void;
 }
