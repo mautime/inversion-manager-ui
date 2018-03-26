@@ -1,31 +1,22 @@
 <div fxLayout="column" fxLayoutAlign="none center" fxLayoutGap="10px">
-    <div></div>
-    <mat-card>
-        <mat-card-header>
-            <mat-card-title><h1>Exchange Transaction</h1></mat-card-title>
-        </mat-card-header>
-        <mat-divider></mat-divider>
-        <mat-card-content>
-            <mat-tab-group (selectedTabChange)="changeTab" fxLayout="column" fxLayoutGap="25px" mat-stretch-tabs>
-                    <mat-tab #buyTab label="Buy">
-                        <exchange-transaction-buy-form *ngIf="transaction?.transactionType == 'BUY'" [(model)]="transaction"
-                            [transactionTypes]="exchangeTransactionTypes | async"
-                            (onSave)="saveTransaction($event)"
-                            (onSaveAndNew)="saveAndNew($event)"
-                            (onCancel)="cancelTransaction($event)"
-                            (onUpdateAmount)="updateTargetAmount($event)">
-                        </exchange-transaction-buy-form>
-                    </mat-tab>
-                    <mat-tab #sellTab label="Sell">
-                        <exchange-transaction-sell-form *ngIf="transaction?.transactionType == 'SELL'" [(model)]="transaction"
-                            [transactionTypes]="exchangeTransactionTypes | async"
-                            (onSave)="saveTransaction($event)"
-                            (onSaveAndNew)="saveAndNew($event)"
-                            (onCancel)="cancelTransaction($event)"
-                            (onUpdateAmount)="updateSourceAmount($event)">
-                        </exchange-transaction-sell-form>
-                    </mat-tab>
-                </mat-tab-group>
-        </mat-card-content>
-    </mat-card>
+        <mat-tab-group (selectedTabChange)="changeTab" fxLayout="column" fxLayoutGap="25px" mat-stretch-tabs>
+                <mat-tab #buyTab label="Buy">
+                    <exchange-transaction-buy-form *ngIf="transaction?.transactionType == 'BUY'" [(model)]="transaction"
+                        [transactionTypes]="exchangeTransactionTypes | async"
+                        (onSave)="saveTransaction($event)"
+                        (onSaveAndNew)="saveAndNew($event)"
+                        (onCancel)="cancelTransaction($event)"
+                        (onUpdateAmount)="updateTargetAmount($event)">
+                    </exchange-transaction-buy-form>
+                </mat-tab>
+                <mat-tab #sellTab label="Sell">
+                    <exchange-transaction-sell-form *ngIf="transaction?.transactionType == 'SELL'" [(model)]="transaction"
+                        [transactionTypes]="exchangeTransactionTypes | async"
+                        (onSave)="saveTransaction($event)"
+                        (onSaveAndNew)="saveAndNew($event)"
+                        (onCancel)="cancelTransaction($event)"
+                        (onUpdateAmount)="updateSourceAmount($event)">
+                    </exchange-transaction-sell-form>
+                </mat-tab>
+            </mat-tab-group>
 </div>

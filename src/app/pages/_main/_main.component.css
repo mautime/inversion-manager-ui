@@ -41,3 +41,48 @@ h1.example-app-name {
      `<body>` to be our scrolling element for mobile layouts. */
   flex: 1 0 auto;
 }
+
+.mat-drawer .mat-nav-list .navigation-link {
+    display: block;
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    padding: 5px 40px;
+    margin: 0;
+    color: #757575;
+}
+
+.mat-drawer .mat-nav-list .navigation-link .material-icons {
+    font-size: 24px;
+    /*color: rgba(255, 255, 255, 0.56);*/
+    margin-right: 32px;
+}
+
+.mat-drawer .app-brand-container {
+    line-height: 64px;
+    /*padding-left: 40px;*/
+    padding: 20px 20px;
+    min-width: 220px;
+    text-align: center;
+}
+
+.mat-drawer .app-brand-container .app-title {
+    color: #424242;
+    display: block;
+    position: relative;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-size: 20px;
+    line-height: 1;
+    letter-spacing: .02em;
+    font-weight: 400;
+    box-sizing: border-box;
+}
+
+.mat-drawer-content .mat-drawer-content-body {
+    padding: 3px;
+}
+
+.navigation-link {
+    font-size: 14px;
+    font-weight: 500;
+}

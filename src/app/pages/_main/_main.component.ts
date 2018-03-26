@@ -17,9 +17,6 @@ export class MainComponent extends BaseComponent implements OnInit{
 
     profile: any;
 
-    @ViewChild('sideNav')
-    sideNav: MatSidenav;
-
     constructor(private router: Router, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, public auth: AuthorizationService, snackBar: MatSnackBar){
         super(snackBar);
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
@@ -52,9 +49,6 @@ export class MainComponent extends BaseComponent implements OnInit{
             this.router.navigate(['/landing']);
         });
     }
-
-    toggleSideNav() {
-        this.sideNav.toggle();
-    }
+    
     private _mobileQueryListener: () => void;
 }

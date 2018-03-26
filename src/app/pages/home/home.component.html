@@ -1,47 +1,37 @@
-<div fxLayout="column" fxFlexFill>
-    <mat-card fxFlex.gt-md="90vh" fxFlex.lt-sm="100%">
-        <mat-card-header>
-            <mat-card-title><h1>Dashboard</h1></mat-card-title>
-        </mat-card-header>
-        <mat-divider></mat-divider>
-        <mat-card-content>
-            <div fxLayout="column" fxLayoutGap="10px" *ngIf="inversionSummary">
-                <mat-list fxLayout.gt-md="row" fxLayoutAlign="end" fxLayout.lt-md="column">
-                    <mat-list-item>
-                        <div fxLayout="row" fxLayoutGap="25px" fxLayoutAlign="start center">
-                            <div><mat-icon class="mat-36">account_balance_wallet</mat-icon></div>
-                            <div><h3>{{inversionSummary.total | currency}} USD</h3></div>
-                        </div>
-                    </mat-list-item>
-                    <mat-list-item>
-                        <div fxLayout="row" fxLayoutGap="25px" fxLayoutAlign="start center">
-                            <div><mat-icon class="far fa-money-bill-alt fa-2x"></mat-icon></div>
-                            <div><h3>{{inversionSummary.worth | currency}} <span [ngClass]="{'success-message': inversionSummary.gain > 0, 'error-message': inversionSummary.gain < 0}">({{inversionSummary.gain | currency}} USD)</span></h3></div>
-                        </div>
-                    </mat-list-item>
-                </mat-list>
-                <div fxLayout.gt-lg="row" fxLayout.lt-lg="column" fxLayoutGap="10px" fxLayoutAlign="center">
-                    <div fxFlex.lg="40%" fxFlex.md="100%" *ngFor="let inversionSummary of inversionSummary.summary">
-                        <mat-card>
-                            <mat-card-content>
-                                <div fxLayout="column" fxLayoutGap="10px">
-                                    <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="none center" fxFlexFill>
-                                        <div><img src="{{inversionSummary.symbolLogo}}" style="width: 35px;"/></div>
-                                        <h2>{{inversionSummary.exchangeSymbol}}</h2>
-                                        <div style="width: 100%; text-align: right; font-weight: bolder;">{{inversionSummary.marketValue | currency}} USD</div>
-                                    </div>
-                                    <div><mat-divider></mat-divider></div>
-                                    <div fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center">
-                                        <div fxLayout="row" fxLayoutAlign="none center" fxLayoutGap="10px"><mat-icon>account_balance_wallet</mat-icon><span>{{inversionSummary.totalSourceAmount | currency}} USD = {{inversionSummary.totalTargetAmount}} {{inversionSummary.exchangeSymbol}}</span></div>
-                                        <div fxLayout="row" fxLayoutAlign="none center" fxLayoutGap="10px"><i class="far fa-money-bill-alt fa-lg"></i><span>{{inversionSummary.worth | currency}} USD</span></div>
-                                        <div [ngClass]="{'success-message': inversionSummary.gain > 0, 'error-message': inversionSummary.gain < 0}" fxFlexAlign="end" style="font-size: 16px; font-weight: bold;">{{inversionSummary.gain | currency}}</div>
-                                    </div>
-                                </div>
-                            </mat-card-content>
-                        </mat-card>
-                    </div>
-                </div>
+<div fxLayout="column" fxLayoutGap="10px" *ngIf="inversionSummary">
+    <mat-list fxLayout.gt-md="row" fxLayoutAlign="end" fxLayout.lt-md="column">
+        <mat-list-item>
+            <div fxLayout="row" fxLayoutGap="25px" fxLayoutAlign="start center" class="summary-title">
+                <div><mat-icon class="mat-36">account_balance_wallet</mat-icon></div>
+                <div><p>{{inversionSummary.total | currency}} USD</p></div>
             </div>
-        </mat-card-content>
-    </mat-card>
+        </mat-list-item>
+        <mat-list-item>
+            <div fxLayout="row" fxLayoutGap="25px" fxLayoutAlign="start center" class="summary-title">
+                <div><mat-icon class="far fa-money-bill-alt fa-lg"></mat-icon></div>
+                <div><p>{{inversionSummary.worth | currency}} <span [ngClass]="{'success-message': inversionSummary.gain > 0, 'error-message': inversionSummary.gain < 0}">({{inversionSummary.gain | currency}} USD)</span></p></div>
+            </div>
+        </mat-list-item>
+    </mat-list>
+    <div fxLayout.gt-lg="row" fxLayout.lt-lg="column" fxLayoutGap="10px" fxLayoutAlign="center">
+        <div fxFlex.lg="40%" fxFlex.md="100%" *ngFor="let inversionSummary of inversionSummary.summary">
+            <mat-card>
+                <mat-card-content>
+                    <div fxLayout="column" fxLayoutGap="10px">
+                        <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="none center" fxFlexFill class="summary-title">
+                            <div><img src="{{inversionSummary.symbolLogo}}" style="width: 35px;"/></div>
+                            <p style="font-weight: bolder;">{{inversionSummary.exchangeSymbol}}</p>
+                            <div style="width: 100%; text-align: right; font-size: 18px;" class="info-message">{{inversionSummary.marketValue | currency}} USD</div>
+                        </div>
+                        <div><mat-divider></mat-divider></div>
+                        <div fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center">
+                            <div fxLayout="row" fxLayoutAlign="none center" fxLayoutGap="10px"><mat-icon>account_balance_wallet</mat-icon><span>{{inversionSummary.totalSourceAmount | currency}} USD = {{inversionSummary.totalTargetAmount}} {{inversionSummary.exchangeSymbol}}</span></div>
+                            <div fxLayout="row" fxLayoutAlign="none center" fxLayoutGap="10px"><i class="far fa-money-bill-alt fa-lg"></i><span>{{inversionSummary.worth | currency}} USD</span></div>
+                            <div [ngClass]="{'success-message': inversionSummary.gain > 0, 'error-message': inversionSummary.gain < 0, 'summary-title': true}" fxFlexAlign="end">{{inversionSummary.gain | currency}}</div>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
 </div>
