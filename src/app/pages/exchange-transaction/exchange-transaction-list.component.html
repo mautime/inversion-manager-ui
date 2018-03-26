@@ -87,14 +87,23 @@
                 <ng-container matColumnDef="action">
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
                     <mat-cell *matCellDef="let element" style="width: 20px;">
-                        <div>
-                            <a mat-icon-button (click)="delete(element.id)"><mat-icon>delete</mat-icon></a>
-                        </div>
+                        <button mat-icon-button [matMenuTriggerFor]="menu">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="selectTransaction(element.id)">
+                                <mat-icon>remove_red_eye</mat-icon>
+                                <span>View</span>
+                            </button>
+                            <button mat-menu-item (click)="delete(element.id)">
+                                <mat-icon>delete</mat-icon>
+                                <span>Delete</span>
+                            </button>
+                        </mat-menu>
                     </mat-cell>
                 </ng-container>
                 <mat-header-row *matHeaderRowDef="['transactionType', 'symbol', 'sourceAmount', 'targetAmount', 'transactionDate', 'action']"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: ['transactionType', 'symbol', 'sourceAmount', 'targetAmount', 'transactionDate', 'action'];" (click)="selectTransaction(row.id)"
-                    [ngClass]="{'selected-component': transactionSelectionModel.isSelected(row.id)}"></mat-row>
+                <mat-row *matRowDef="let row; columns: ['transactionType', 'symbol', 'sourceAmount', 'targetAmount', 'transactionDate', 'action'];"></mat-row>
             </mat-table>
             <mat-paginator #exchangeTransactionsTablePaginator
                 [pageSize]="10">

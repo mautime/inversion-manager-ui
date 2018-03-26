@@ -88,7 +88,7 @@ export class ExchangeTransactionListComponent extends BaseComponent implements O
     delete(id: number){
         this.exchangeTransactionService.delete(id).pipe(map(response => response.results)).subscribe(response => {
             if (response === 'success'){
-                this.showSuccessMessage(new SuccessMessage(`Transaction ${id} has been deleted`));
+                this.showSuccessMessage(new SuccessMessage(`${id}: Transaction has been deleted`));
             }
 
             this._refreshTable();

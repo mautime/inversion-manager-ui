@@ -52,11 +52,11 @@ html, body {
 .material-icons.mat-48 { font-size: 48px; }
 
 
-.mat-row:hover {
+/*.mat-row:hover {
     /*background-color: #E8EAF6;*/
-    background-color: #EEEEEE;
+    /*background-color: #EEEEEE;*/
     /*color: #7986CB !important;*/
-}
+/*}*/
 
 /*.mat-row:hover .mat-cell{
     color: #7986CB !important;
