@@ -22,7 +22,7 @@ export class MainComponent extends BaseComponent implements OnInit{
 
     constructor(private router: Router, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, public auth: AuthorizationService, public utilService: UtilService, snackBar: MatSnackBar){
         super(snackBar);
-        this.mobileQuery = media.matchMedia('(max-width: 600px)');
+        this.mobileQuery = media.matchMedia('(max-width: 992px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
         this.mobileQuery.addListener(this._mobileQueryListener);
 

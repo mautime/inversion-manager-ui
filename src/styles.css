@@ -90,7 +90,7 @@ html, body {
     flex-wrap: nowrap;
     width: 100%;
     height: 100%;
-    position: absolute !important;
+    position: absolute;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }

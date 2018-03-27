@@ -24,6 +24,7 @@ export class AuthorizationService {
         //audience: 'https://mautime.auth0.com/userinfo',
         audience: 'http://localhost:8080/inversion-manager', 
         redirectUri: 'http://localhost:4200/callback',
+        //redirectUri: 'http://ec2-18-188-47-234.us-east-2.compute.amazonaws.com/callback',
         scope: 'openid profile email offline_access'
       });
     

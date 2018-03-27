@@ -1,5 +1,5 @@
-<div fxLayout="column" fxLayoutGap="10px" *ngIf="inversionSummary">
-    <mat-list fxLayout.gt-md="row" fxLayoutAlign="end" fxLayout.lt-md="column">
+<div fxLayout="column" fxLayoutGap="25px" *ngIf="inversionSummary">
+    <mat-list fxLayout.gt-md="row" fxLayoutAlign="end" fxLayout.lt-md="column" fxLayoutGap.lt-md="25px" fxLayoutAlign.lt-md="none end">
         <mat-list-item>
             <div fxLayout="row" fxLayoutGap="25px" fxLayoutAlign="start center" class="summary-title">
                 <div><mat-icon class="mat-36">account_balance_wallet</mat-icon></div>
@@ -7,9 +7,12 @@
             </div>
         </mat-list-item>
         <mat-list-item>
-            <div fxLayout="row" fxLayoutGap="25px" fxLayoutAlign="start center" class="summary-title">
-                <div><mat-icon class="far fa-money-bill-alt fa-lg"></mat-icon></div>
-                <div><p>{{inversionSummary.worth | currency}} <span [ngClass]="{'success-message': inversionSummary.gain > 0, 'error-message': inversionSummary.gain < 0}">({{inversionSummary.gain | currency}} USD)</span></p></div>
+            <div fxLayout="row" fxLayoutGap="25px" fxLayoutAlign="start center" fxLayout.lt-sm="column" fxLayoutGap.lt-sm="25px" fxLayoutAlign.lt-sm="none end" class="summary-title">
+                <div fxLayout="row" fxLayoutGap="25px">
+                    <mat-icon class="far fa-money-bill-alt fa-lg"></mat-icon>
+                    <span>{{inversionSummary.worth | currency}}</span>
+                </div>
+                <div [ngClass]="{'success-message': inversionSummary.gain > 0, 'error-message': inversionSummary.gain < 0}">({{inversionSummary.gain | currency}} USD)</div>
             </div>
         </mat-list-item>
     </mat-list>
