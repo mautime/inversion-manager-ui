@@ -20,7 +20,7 @@
   right: 0;
 }
 
-.example-is-mobile .example-toolbar {
+.example-toolbar {
   position: fixed;
   /* Make sure the toolbar will stay on top of the content as it scrolls past. */
   z-index: 2;
@@ -80,6 +80,7 @@ h1.example-app-name {
 
 .mat-drawer-content .mat-drawer-content-body {
     padding: 3px;
+    margin-top: 64px;
 }
 
 .navigation-link {

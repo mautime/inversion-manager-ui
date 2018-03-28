@@ -28,7 +28,7 @@
                 </div>
             </mat-toolbar>
             <div class="mat-drawer-content-body">
-                <mat-card class="inner-card" [ngStyle]="{'position': mobileQuery.matches ? 'relative' : 'absolute', 'margin-top': mobileQuery.matches ? '54px' : ''}">
+                <mat-card class="inner-card" [ngStyle]="{'position': mobileQuery.matches ? 'relative' : 'absolute'}">
                     <mat-card-content>
                         <router-outlet></router-outlet>
                     </mat-card-content>
